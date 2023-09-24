@@ -23,15 +23,23 @@ void DATA::increment(){
 }
 
 uint16_t DATA::getBlock(){
-   return count;
+    return count;
 }
 
 uint16_t DATA::getOpcode(){
     return ntohs(opcode);
 }
 
+const char* DATA::getData(){
+    return data;
+}
+
 int DATA::size(){
-   return 4+bytesAmount; 
+    return 4+bytesAmount; 
+}
+
+int DATA::dataSize(){
+    return bytesAmount;
 }
 
 void DATA::setData(char _data[], size_t size){
