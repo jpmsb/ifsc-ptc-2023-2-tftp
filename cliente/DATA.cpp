@@ -26,6 +26,10 @@ uint16_t DATA::getBlock(){
    return count;
 }
 
+uint16_t DATA::getOpcode(){
+    return ntohs(opcode);
+}
+
 int DATA::size(){
    return 4+bytesAmount; 
 }

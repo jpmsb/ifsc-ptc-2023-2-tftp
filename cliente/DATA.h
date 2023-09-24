@@ -14,6 +14,7 @@ class DATA {
         DATA(char & buffer);
 
         uint16_t getBlock();
+        uint16_t getOpcode();
         void increment();
         void setData(char _data[], size_t size);
         int size();
