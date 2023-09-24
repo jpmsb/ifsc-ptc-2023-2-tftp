@@ -6,14 +6,17 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 class DATA {
     public:
         DATA(std::string & filename);
+        DATA(char & buffer);
 
-        uint16_t get_block();
+        uint16_t getBlock();
         void increment();
-        void setData(char & data); 
+        void setData(char & data);
+        int size(); 
 
     private:
         uint16_t opcode;
