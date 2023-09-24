@@ -15,8 +15,9 @@ class DATA {
 
         uint16_t getBlock();
         void increment();
-        void setData(char & data);
-        int size(); 
+        void setData(char _data[], size_t size);
+        int size();
+        void setBytes(char bytes[], size_t size);
 
     private:
         uint16_t opcode;
@@ -24,6 +25,7 @@ class DATA {
         char data[512];
         int count = 0;
 	std::ifstream file;
+        std::streamsize bytesAmount;
 };
 
 #endif
