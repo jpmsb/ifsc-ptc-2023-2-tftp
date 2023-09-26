@@ -5,8 +5,8 @@ using namespace std;
 DATA::DATA(string & filename)
   : opcode(htons(3)), block(0), count(0), bytesAmount(0), file(filename, ios::binary)
 {
-    file.read((char *)data, 512);
-    bytesAmount = file.gcount();
+    // file.read((char *)data, 512);
+    // bytesAmount = file.gcount();
     
 }
 
