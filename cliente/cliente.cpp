@@ -10,52 +10,75 @@
 using namespace std;
 
 // A especialização de Callback para se comunicar com o servidor
-class ComunicaComServidor: public Callback {
+class TFTP: public Callback {
 
  public:
 
- ComunicaComServidor(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, string & operacao, string & arq_remoto, string & arq_local)
+ TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, string & operacao, string & arq_remoto, string & arq_local)
     : Callback(sock.get_descriptor(), 0), sock(sock), addr(addr), operation(operacao), remoteFile(arq_remoto), localFile(arq_local) {
             disable_timeout();
-            estado = Estado::Inicio;
+
+            cout << "Início!!" << endl;
+            if (operation == "enviar"){
+                wrq = new WRQ(remoteFile);
+            } else if (operation == "receber"){
+                rrq = new RRQ(remoteFile);
+            }
+            estado = Estado::Conexao;
 	    start(); // inicializa primeiro pacote
   }
 
   void handle() {
       switch (estado) {
-          case Estado::Inicio:
-              cout << "Início!!" << endl;
-              if (operation == "enviar"){
-                  wrq = new WRQ(remoteFile);
-              } else if (operation == "receber"){
-                  rrq = new RRQ(remoteFile);
-              }
-              estado = Estado::Conexao;
-
-              break;
-
           case Estado::Conexao:
-              cout << "Conexão!!" << endl;
+              cout << "Conexão!! " << endl;
               if (operation == "enviar"){
+                  cout << "Enviando o arquivo \"" << remoteFile << "\"!!" << endl;
                   sock.send(wrq->data(), wrq->size(), addr);
-                  estado = Estado::Transmitir;
                   data = new DATA(remoteFile);
+
+                  char buffer[4];
+                  sock.recv(buffer, 4, addr);
+                  
+                  ack = new ACK();
+                  ack->setBytes(buffer);
+
+                  if (ack->getOpcode() == 4) {
+                      ack->setBytes(buffer);
+                      cout << "Recebeu ACK " << ack->getBlock() << "!" << endl;
+                      data->increment();
+                      estado = Estado::Transmitir;
+                  }
+                  else cout << "O pacote recebido não é um ACK!" << endl;
+
+
               } else if (operation == "receber"){
+                  cout << "Recebendo!! " << endl;
                   sock.send(rrq->data(), rrq->size(), addr);
                   estado = Estado::Receber;
+
               }
               break;
 
           case Estado::Transmitir:
-              cout << "Transmitindo \"" << data->size() << "\" bytes..." << endl;
+              cout << "Transmitindo \"" << data->dataSize() << "\" bytes..." << endl;
 
-              if (data->size() >= 512) {
-                  sock.send((char*)&data, data->size(), addr);
-                  data->increment();
+              if (data->dataSize() >= 512) {
+                  sock.send((char*)data, data->size(), addr);
               } else { // Último pacote
-                  sock.send((char*)&data, data->size(), addr);
+                  sock.send((char*)data, data->size(), addr);
                   estado = Estado::Fim;
               }
+
+              char buffer[4];
+              sock.recv(buffer, 4, addr);
+
+              if (ack->getOpcode() == 4) {
+                  ack->setBytes(buffer);
+                  cout << "Recebeu ACK " << ack->getBlock() << "!" << endl;
+                  data->increment();
+              }
+              else cout << "O pacote recebido não é um ACK!" << endl;
 
               break;
 
@@ -79,7 +102,6 @@ class ComunicaComServidor: public Callback {
 
  private:
   enum Estado {
-      Inicio,
       Conexao,
       Transmitir,
       Receber,
@@ -110,14 +132,11 @@ int main(int argc, char * argv[]) {
     sockpp::UDPSocket sock;
     sockpp::AddrInfo addr(end_servidor, porta);
 
-    ComunicaComServidor cb_servidor(sock, addr, operacao, arquivo_remoto, arquivo_local);
+    TFTP cb_tftp(sock, addr, operacao, arquivo_remoto, arquivo_local);
 
-    sched.adiciona(&cb_servidor);
-
-    cb_servidor.handle();
+    sched.adiciona(&cb_tftp);
 
     sched.despache();
 
-    cout << "aaaaa" << endl;
 
 }
