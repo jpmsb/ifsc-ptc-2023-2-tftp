@@ -21,6 +21,10 @@ int main(int argc, char * argv[]){
     string arq_origem = argv[1];
     ACK ack;
     ack.increment();
+    ack.increment();
+
+    ACK ack2;
+    ack2.setBytes((char*)&ack);
 
     WRQ rrq(arq_origem);
 
@@ -37,9 +41,10 @@ int main(int argc, char * argv[]){
     cout << "data opcode " << data.getOpcode() << endl;
     cout << "data dataSize " << data.dataSize() << endl;
 
-    sock.send(rrq.data(), rrq.size(), addr);
+    // sock.send(rrq.data(), rrq.size(), addr);
     // sock.send((char*)&ack, sizeof(ACK), addr);
-    sock.send((char*)&data, data.size(), addr);
+    sock.send((char*)&ack2, sizeof(ACK), addr);
+    // sock.send((char*)&data, data.size(), addr);
 
     union {
       unsigned char uc4[4];
