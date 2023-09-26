@@ -9,9 +9,17 @@ void ACK::increment(){
     block = htons(ntohs(block)+1); 
 }
 
-uint16_t ACK::get_block(){
-   return 0;
+uint16_t ACK::getBlock(){
+   return ntohs(block);
 }
 
-void ACK::set(){
+uint16_t ACK::getOpcode(){
+   return ntohs(opcode);
+}
+
+void ACK::setBytes(char bytes[]){
+   uint8_t uint16Size = sizeof(uint16_t);
+
+   memcpy(&opcode, bytes, uint16Size);
+   memcpy(&block, bytes + uint16Size, uint16Size);
 }
