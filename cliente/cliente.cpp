@@ -45,9 +45,9 @@ class TFTP: public Callback {
                   ack->setBytes(buffer); // Salvar bytes do ACK no objeto ack
 
                   if (ack->getOpcode() == 4) {
-                      ack->setBytes(buffer);
                       cout << "(Conexão) Recebeu ACK " << ack->getBlock() << "!" << endl;
-                      data->increment();
+
+                      cout << "Transmitindo \"" << data->dataSize() << "\" bytes..." << endl;
                       sock.send((char*)data, data->size(), addr);
                       estado = Estado::Transmitir;
 
@@ -57,8 +57,28 @@ class TFTP: public Callback {
               } else if (operation == "receber"){
                   cout << "Recebendo o arquivo \"" << srcFile << "\"!!" << endl;
                   sock.send(rrq->data(), rrq->size(), addr);
+
                   estado = Estado::Receber;
 
+                  // Preparando para receber DATA
+                  char buffer[516];
+                  int bytesAmount = sock.recv(buffer, 516, addr);
+
+                  data = new DATA(buffer, bytesAmount); // Salvar bytes do DATA no objeto data
+                
+                  if (data->getOpcode() == 3){
+                     cout << "(Conexão) Recebeu DATA " << data->getBlock() << "!" << endl;
+                     outputFile = new ofstream(srcFile);
+
+                     cout << data->dataSize() << endl;
+                     cout << data->getData() << endl;
+
+                     // Escrever os dados recebidos no arquivo
+                     outputFile->write(data->getData(), data->dataSize());
+                     outputFile->close(); // APENAS PARA DEPURAÇÃO (APAGUE ISSO E UTILIZE O SYNC, TAMBÉM PARA DEPURAÇÃO)
+                     
+                  } else cout << "O pacote recebido não é um DATA!" << endl;
+                  
               }
               break;
 
@@ -118,6 +138,7 @@ class TFTP: public Callback {
   WRQ * wrq;
   DATA * data;
   ACK * ack;
+  ofstream * outputFile;
 
 };
 
