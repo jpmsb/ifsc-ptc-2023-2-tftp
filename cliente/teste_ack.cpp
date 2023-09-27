@@ -34,12 +34,16 @@ int main(int argc, char * argv[]){
 
     // DATA data(*buffer);
     DATA data(arq_origem);
-    // data.increment();
+    data.increment();
     // data.increment();
 
     cout << "data block " << data.getBlock() << endl;
     cout << "data opcode " << data.getOpcode() << endl;
     cout << "data dataSize " << data.dataSize() << endl;
+
+    const char* dados = data.getData();
+
+    cout << "data getData " << dados << endl;
 
     // sock.send(rrq.data(), rrq.size(), addr);
     // sock.send((char*)&ack, sizeof(ACK), addr);
