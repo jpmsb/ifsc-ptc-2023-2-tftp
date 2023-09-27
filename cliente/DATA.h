@@ -10,8 +10,9 @@
 
 class DATA {
     public:
+        DATA();
         DATA(std::string & filename);
-        DATA(char & buffer);
+        DATA(char bytes[], size_t size);
 
         uint16_t getBlock();
         uint16_t getOpcode();

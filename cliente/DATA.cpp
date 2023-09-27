@@ -2,16 +2,29 @@
 
 using namespace std;
 
-DATA::DATA(string & filename)
-  : opcode(htons(3)), block(0), count(0), bytesAmount(0), file(filename, ios::binary)
+DATA::DATA()
+  : opcode(htons(3)), block(0), count(0), bytesAmount(0)
 {
-    // file.read((char *)data, 512);
-    // bytesAmount = file.gcount();
     
 }
 
-DATA::DATA(char & buffer) : opcode(htons(3)), block(0) {
-    memcpy(data, &buffer, 512);
+DATA::DATA(string & filename)
+  : opcode(htons(3)), block(htons(1)), bytesAmount(0), file(filename, ios::binary)
+{
+    file.read((char *)data, 512);
+    bytesAmount = file.gcount();
+    count = ntohs(block);
+    
+}
+
+DATA::DATA(char bytes[], size_t size){
+    uint8_t uint16Size = sizeof(uint16_t);
+
+    memcpy(&opcode, bytes, uint16Size);
+    memcpy(&block, bytes + uint16Size, uint16Size);
+    memcpy(data, bytes+4, size-4);
+    bytesAmount = size-4;
+    count = ntohs(block);
 }
 
 void DATA::increment(){
