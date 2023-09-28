@@ -58,31 +58,28 @@ class TFTP: public Callback {
                   cout << "Recebendo o arquivo \"" << srcFile << "\"!!" << endl;
                   sock.send(rrq->data(), rrq->size(), addr);
 
-                  estado = Estado::Receber;
-
                   // Preparando para receber DATA
                   char buffer[516];
                   int bytesAmount = sock.recv(buffer, 516, addr);
-
                   data = new DATA(buffer, bytesAmount); // Salvar bytes do DATA no objeto data
                 
                   if (data->getOpcode() == 3){
                      cout << "(Conexão) Recebeu DATA " << data->getBlock() << "!" << endl;
                      outputFile = new ofstream(srcFile);
 
-                     cout << data->dataSize() << endl;
-                     cout << data->getData() << endl;
-
                      // Escrever os dados recebidos no arquivo
                      outputFile->write(data->getData(), data->dataSize());
-                     outputFile->close(); // APENAS PARA DEPURAÇÃO (APAGUE ISSO E UTILIZE O SYNC, TAMBÉM PARA DEPURAÇÃO)
+                     estado = Estado::Receber;
                      
+                  } else if (data->getOpcode() == 5) {
+                     cout << "Recebeu um pacote de ERRO!" << endl;
+
                   } else cout << "O pacote recebido não é um DATA!" << endl;
                   
               }
               break;
 
-          case Estado::Transmitir:
+          case Estado::Transmitir: {
               char buffer[4];
               sock.recv(buffer, 4, addr);
 
@@ -102,10 +99,29 @@ class TFTP: public Callback {
               }
 
               break;
+          }
+          case Estado::Receber: {
+              // Preparando para receber DATA
+              char buffer[516];
+              int bytesAmount = sock.recv(buffer, 516, addr);
+              data = new DATA(buffer, bytesAmount); // Salvar bytes do DATA no objeto data
+   
+              cout << "Recebeu " << endl;
+ 
+              if (data->getOpcode() == 3){ 
+                 cout << "Recebeu DATA " << data->getBlock() << "!" << endl;
 
-          case Estado::Receber:
+                 // Escrever os dados recebidos no arquivo
+                 outputFile->write(data->getData(), data->dataSize());
+
+                 if (data->dataSize() < 512) estado = Estado::Fim;
+    
+              } else if (data->getOpcode() == 5) {
+                 cout << "Recebeu um pacote de ERRO!" << endl;
+
+              } else cout << "O pacote recebido não é um DATA!" << endl;
               break;
-
+          }
           case Estado::Fim:
               cout << "Fim!" << endl;
               exit(0);
