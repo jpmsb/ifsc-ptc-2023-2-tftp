@@ -4,8 +4,9 @@
 #include <string>
 #include "RRQ.h"
 #include "WRQ.h"
-#include "ACK.h"
 #include "DATA.h"
+#include "ACK.h"
+#include "ERROR.h"
 
 using namespace std;
 
@@ -38,7 +39,6 @@ class TFTP: public Callback {
                   data = new DATA(srcFile);
 
                   // Preparando para receber ACK
-                  char buffer[4];
                   sock.recv(buffer, 4, addr);
                   
                   ack = new ACK();
@@ -59,28 +59,37 @@ class TFTP: public Callback {
                   sock.send(rrq->data(), rrq->size(), addr);
 
                   // Preparando para receber DATA
-                  char buffer[516];
-                  int bytesAmount = sock.recv(buffer, 516, addr);
+                  bytesAmount = sock.recv(buffer, 516, addr);
                   data = new DATA(buffer, bytesAmount); // Salvar bytes do DATA no objeto data
-                
+
                   if (data->getOpcode() == 3){
                      cout << "(Conexão) Recebeu DATA " << data->getBlock() << "!" << endl;
                      outputFile = new ofstream(srcFile);
 
                      // Escrever os dados recebidos no arquivo
                      outputFile->write(data->getData(), data->dataSize());
+
+                     // Mandar um ACK para o servidor
+                     ack = new ACK();
+                     ack->increment();
+                     sock.send((char*)ack, sizeof(ACK), addr);                     
+
                      estado = Estado::Receber;
                      
                   } else if (data->getOpcode() == 5) {
                      cout << "Recebeu um pacote de ERRO!" << endl;
+                     error = new ERROR(buffer, bytesAmount);
+
+                     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+                     estado = Estado::Fim;
+                     start();
 
                   } else cout << "O pacote recebido não é um DATA!" << endl;
                   
               }
               break;
 
-          case Estado::Transmitir: {
-              char buffer[4];
+          case Estado::Transmitir:
               sock.recv(buffer, 4, addr);
 
               if (ack->getOpcode() == 4) {
@@ -99,34 +108,45 @@ class TFTP: public Callback {
               }
 
               break;
-          }
-          case Estado::Receber: {
+          
+          case Estado::Receber:
               // Preparando para receber DATA
-              char buffer[516];
-              int bytesAmount = sock.recv(buffer, 516, addr);
+              bytesAmount = sock.recv(buffer, 516, addr);
               data = new DATA(buffer, bytesAmount); // Salvar bytes do DATA no objeto data
    
               cout << "Recebeu " << endl;
  
               if (data->getOpcode() == 3){ 
-                 cout << "Recebeu DATA " << data->getBlock() << "!" << endl;
+                 cout << "(Recv) Recebeu DATA " << data->getBlock() << "!" << endl;
 
                  // Escrever os dados recebidos no arquivo
                  outputFile->write(data->getData(), data->dataSize());
 
-                 if (data->dataSize() < 512) estado = Estado::Fim;
+                 // Mandar um ACK para o servidor
+                 cout << "Enviando ACK" << endl;
+                 ack->increment();
+                 sock.send((char*)ack, sizeof(ACK), addr);                     
+
+                 if (data->dataSize() < 512) {
+                     outputFile->close();
+                     estado = Estado::Fim;
+                     start();
+                 }
     
               } else if (data->getOpcode() == 5) {
                  cout << "Recebeu um pacote de ERRO!" << endl;
+                 error = new ERROR(buffer, bytesAmount);
+                 cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+                 estado = Estado::Fim;
+                 start();
 
               } else cout << "O pacote recebido não é um DATA!" << endl;
               break;
-          }
+          
           case Estado::Fim:
               cout << "Fim!" << endl;
               exit(0);
               break;
-
       }
   }
 
@@ -154,8 +174,10 @@ class TFTP: public Callback {
   WRQ * wrq;
   DATA * data;
   ACK * ack;
+  ERROR * error;
   ofstream * outputFile;
-
+  char buffer[516];
+  int bytesAmount;
 };
 
 int main(int argc, char * argv[]) {
