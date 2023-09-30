@@ -1,6 +1,5 @@
 #include "poller.h"
 #include "UDPSocket.h"
-#include <iostream>
 #include <string>
 #include "RRQ.h"
 #include "WRQ.h"
@@ -12,7 +11,19 @@ using namespace std;
 
 class TFTP: public Callback {
  public:
-  TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, string & operacao, string & sourceFile, string & destinationFile);
+ // Enumeração que organiza as operações de envio e recebimento
+ enum Operation {
+     SEND,
+     RECEIVE,
+ };
+
+  // Construtor da classe que recebe todos os parâmetros
+  // para o funcionamento do cliente TFTP
+  TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Operation operation, string & sourceFile, string & destinationFile);
+
+  bool status();
+  uint16_t getErrorCode();
+  string getErrorMessage();
 
  private:
   void handle();
@@ -27,7 +38,7 @@ class TFTP: public Callback {
   Estado estado;
   sockpp::UDPSocket & sock;
   sockpp::AddrInfo addr;
-  string operation;
+  Operation operation;
   string srcFile;
   string destFile;
   RRQ * rrq;
@@ -38,4 +49,7 @@ class TFTP: public Callback {
   ofstream * outputFile;
   char buffer[516];
   int bytesAmount;
+  bool transferStatus;
+  int errorCode;
+  string errorMessage;
 };
