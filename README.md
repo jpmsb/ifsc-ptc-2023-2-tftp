@@ -33,3 +33,13 @@ cliente 127.0.0.1 6969 receber arquivo-a arquivo-b
 ```
 cliente 127.0.0.1 6969 enviar arquivo-a arquivo-b
 ```
+
+## Bug
+
+Ao final da execução do programa ocorre o erro:
+
+```
+free(): invalid size
+```
+
+Isso não impacta no resultado gerado pela aplicação em si, porém a mesma não termina de forma adequada.
