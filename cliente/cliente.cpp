@@ -23,7 +23,7 @@ int main(int argc, char * argv[]) {
         operation = TFTP::RECEIVE;
     } else {
         cout << "Operação inválida!!!" << endl;
-        exit(1);
+        return 1;
     }
 
     Poller sched;
@@ -32,17 +32,16 @@ int main(int argc, char * argv[]) {
     sockpp::AddrInfo addr(end_servidor, porta);
 
     // Cria um objeto TFTP com timeout de 3 segundos
-    TFTP cb_tftp(sock, addr, 3, operation, arq_origem, arq_destino);
+    TFTP * cb_tftp = new TFTP(sock, addr, 3, operation, arq_origem, arq_destino);
 
     // Adiciona o objeto TFTP ao poller
-    sched.adiciona(&cb_tftp);
+    sched.adiciona(cb_tftp);
     sched.despache();
     
     // Verifica se o processo de transferência foi bem sucedido
-    if (cb_tftp.status()) cout << "Tudo certo" << endl;
+    if (cb_tftp->status()) cout << "Tudo certo" << endl;
     else {
-        cout << "Erro " << cb_tftp.getErrorCode() << ": " << cb_tftp.getErrorMessage() << endl;
-        exit(1);
+        cout << "Erro " << cb_tftp->getErrorCode() << ": " << cb_tftp->getErrorMessage() << endl;
     }
 
     return 0;
