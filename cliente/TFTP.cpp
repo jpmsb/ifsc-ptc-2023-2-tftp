@@ -3,7 +3,7 @@
 using namespace std;
 
 TFTP::TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Operation operation, string & sourceFile, string & destinationFile)
-    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), transferStatus(false) {
+    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), transferStatus(false), wrq(0), rrq(0), data(0), ack(0), error(0), outputFile(0) {
     // Por garantia, desabilita o timeout
     disable_timeout();
 
@@ -25,6 +25,15 @@ TFTP::TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Opera
     estado = Estado::Conexao;
     start(); // inicializa primeiro pacote
   }
+
+TFTP::~TFTP(){
+    if (wrq != 0) delete wrq;
+    if (rrq != 0) delete rrq;
+    if (data != 0) delete data;
+    if (ack != 0) delete ack;
+    if (error != 0) delete error;
+    if (outputFile != 0) delete outputFile;
+}
 
 void TFTP::handle() {
     switch (estado) {

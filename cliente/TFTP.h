@@ -20,6 +20,7 @@ class TFTP: public Callback {
   // Construtor da classe que recebe todos os parâmetros
   // para o funcionamento do cliente TFTP
   TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Operation operation, string & sourceFile, string & destinationFile);
+  ~TFTP();
 
   bool status();
   uint16_t getErrorCode();
