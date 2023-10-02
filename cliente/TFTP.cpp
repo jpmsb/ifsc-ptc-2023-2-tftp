@@ -2,8 +2,15 @@
 
 using namespace std;
 
+// Construtor da classe TFTP, que recebe como parâmetros:
+// sock: referência para socktet UDP, sendo um objeto do tipo UDPSocket, do namespace sockpp
+// addr: referência para endereçamento de erro, sendo um objeto do tipo AddrInfo, do namespace sockpp
+// timeout: um inteiro para definir o tempo limite de espera por uma resposta do servidor
+// operation: enumeração que define se o cliente solicitará envio ou recebimento de arquivo
+// sourceFile: referência para uma string que contém o nome do arquivo de origem
+// destinationFile: referência para uma string que contém o nome do arquivo de destino
 TFTP::TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Operation operation, string & sourceFile, string & destinationFile)
-    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), transferStatus(false), wrq(0), rrq(0), data(0), ack(0), error(0), outputFile(0) {
+    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), wrq(0), rrq(0), data(0), ack(0), error(0), outputFile(0) {
     // Por garantia, desabilita o timeout
     disable_timeout();
 
@@ -68,6 +75,7 @@ void TFTP::handle() {
  
                    // Dado o erro, o próximo estado é o fim.
                    estado = Estado::Fim;
+                   throw error;
 
                    // Como não receberá mais pacotes do servidor,
                    // para que a máquina de estados finalize, é
@@ -112,12 +120,9 @@ void TFTP::handle() {
                    // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
                    error = new ERROR(buffer, bytesAmount);
 
-                   // Salva o código e a mensagem de erro
-                   errorCode = error->getErrorCode();
-                   errorMessage = error->getErrorMessage();
-
                    // Dado o erro, o próximo estado é o fim.
                    estado = Estado::Fim;
+                   throw error;
 
                    // Como não receberá mais pacotes do servidor,
                    // para que a máquina de estados finalize, é
@@ -147,7 +152,6 @@ void TFTP::handle() {
                 } else { // Último pacote
                     sock.send((char*)data, data->size(), addr); // Enviar o último DATA
                     estado = Estado::Fim; // Mudar o estado para o fim
-                    transferStatus = true; // Indica que a transferência foi bem sucedida
                     start(); // Chamar a máquina de estados uma última vez
                 }
 
@@ -157,6 +161,7 @@ void TFTP::handle() {
 
                // Dado o erro, o próximo estado é o fim.
                estado = Estado::Fim;
+               throw error;
 
                // Como não receberá mais pacotes do servidor,
                // para que a máquina de estados finalize, é
@@ -190,7 +195,6 @@ void TFTP::handle() {
                if (data->dataSize() < 512) {
                    outputFile->close(); // O arquivo é sincronizado no armazenamento
                    estado = Estado::Fim;  // o estado é definido para o Fim
-                   transferStatus = true;
                    start(); // A máquina de estados é chamada uma última vez
                }
   
@@ -200,6 +204,7 @@ void TFTP::handle() {
 
                // Dado o erro, o próximo estado é o fim.
                estado = Estado::Fim;
+               throw error;
                start(); // A máquina de estados é chamada uma última vez
 
             } else { // Para qualquer outro evento o estado é o fim
@@ -221,16 +226,4 @@ void TFTP::handle_timeout() {
 
 void TFTP::start() {
     handle();
-}
-
-bool TFTP::status(){
-    return transferStatus;
-}
-
-uint16_t TFTP::getErrorCode(){
-    return errorCode;
-}
-
-string TFTP::getErrorMessage(){
-    return errorMessage;
 }

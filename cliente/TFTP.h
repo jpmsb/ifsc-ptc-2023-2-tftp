@@ -22,10 +22,6 @@ class TFTP: public Callback {
   TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Operation operation, string & sourceFile, string & destinationFile);
   ~TFTP();
 
-  bool status();
-  uint16_t getErrorCode();
-  string getErrorMessage();
-
  private:
   void handle();
   void handle_timeout();
@@ -50,7 +46,4 @@ class TFTP: public Callback {
   ofstream * outputFile;
   char buffer[516];
   int bytesAmount;
-  bool transferStatus;
-  int errorCode;
-  string errorMessage;
 };
