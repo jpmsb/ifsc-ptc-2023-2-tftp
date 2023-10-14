@@ -11,7 +11,7 @@
 class DATA {
     public:
         DATA();
-        DATA(std::string & filename);
+        DATA(const std::string & filename);
         DATA(char bytes[], size_t size);
 
         uint16_t getBlock();

@@ -8,7 +8,7 @@ DATA::DATA()
     
 }
 
-DATA::DATA(string & filename)
+DATA::DATA(const string & filename)
   : opcode(htons(3)), block(htons(1)), bytesAmount(0), file(filename, ios::binary)
 {
     file.read((char *)data, 512);
