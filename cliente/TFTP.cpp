@@ -53,7 +53,7 @@ void TFTP::handle() {
 
                 // Esperando a resposta do servidor e guardando
                 // a mesma em um arranjo de char chamado buffer
-                sock.recv(buffer, 4, addr);
+                sock.recv(buffer, sizeof(buffer), addr);
                
                 // Instanciação do pacote ACK
                 ack = new ACK();
@@ -70,7 +70,7 @@ void TFTP::handle() {
                     // Muda o estado para Transmitir
                     estado = Estado::Transmitir;
 
-                } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
+                } else if (ack->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
                    // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
                    error = new ERROR(buffer, bytesAmount);
  
@@ -147,7 +147,7 @@ void TFTP::handle() {
         case Estado::Transmitir:
             // Recebimento do possível ACK do servidor após o envio do
             // primeiro pacote DATA
-            sock.recv(buffer, 4, addr);
+            sock.recv(buffer, sizeof(buffer), addr);
             ack->setBytes(buffer); // Atribui os bytes recebidos no objeto ack
 
             // Verifica se o pacote recebido realmente é um ACK
