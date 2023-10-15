@@ -1,8 +1,14 @@
 #include "ACK.h"
 
-ACK::ACK(){
-    ACK::opcode = htons(4);
-    ACK::block = 0;
+ACK::ACK() 
+    : opcode(htons(4)), block(0) {
+}
+
+ACK::ACK(char bytes[]) {
+   uint8_t uint16Size = sizeof(uint16_t);
+
+   memcpy(&opcode, bytes, uint16Size);
+   memcpy(&block, bytes + uint16Size, uint16Size);
 }
 
 void ACK::increment(){

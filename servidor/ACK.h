@@ -8,6 +8,7 @@
 class ACK {
     public:
         ACK();
+        ACK(char bytes[]);
 
         uint16_t getBlock();
         uint16_t getOpcode();
