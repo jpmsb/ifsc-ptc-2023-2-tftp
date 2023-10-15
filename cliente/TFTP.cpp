@@ -1,4 +1,5 @@
 #include "TFTP.h"
+#include <iostream>
 
 using namespace std;
 
@@ -113,8 +114,14 @@ void TFTP::handle() {
                    ack->increment(); // Incrementar o número de bloco do ACK
                    sock.send((char*)ack, sizeof(ACK), addr); // Mandar ACK para o servidor
 
-                   // O estado muda para Receber
-                   estado = Estado::Receber;
+                   if (data->dataSize() < 512) {
+		       outputFile->close(); // O arquivo é sincronizado no armazenamento
+		       estado = Estado::Fim;  // o estado é definido para o Fim
+		       start(); // A máquina de estados é chamada uma última vez
+		   } else {
+                       // O estado muda para Receber
+                       estado = Estado::Receber;
+                   }
                    
                 } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
                    // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
@@ -129,7 +136,7 @@ void TFTP::handle() {
                    // preciso chamar a mesma mais uma vez
                    start();
 
-                } else {                    // Se acontece qualquer outra coisa
+                } else {                    // Se acontecer qualquer outra coisa
                    estado = Estado::Fim;    // além do esperado, vá para o estado Fim
                    start();  // Chama a máquna de estados uma última vez
                 };
