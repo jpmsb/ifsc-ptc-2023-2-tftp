@@ -62,10 +62,17 @@ void TFTPServer::handle() {
 
                     cout << "Recebendo o arquivo \"" << filepath << "\"..." << endl;
                     if (access(filepath.c_str(), F_OK) == 0){
-                        error = new ERROR(2);
+                        error = new ERROR(6);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
                         estado = Estado::Fim;
+                        start();
+
+                    } else {
+                        estado = Estado::Receber;
+                        ack = new ACK();
+                        outputFile = new ofstream(filepath);
+                        enable_timeout();
                         start();
                     }
 
@@ -116,6 +123,32 @@ void TFTPServer::handle() {
             break;
         
         case Estado::Receber:
+            cout << "Estado Receber" << endl;
+
+            sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
+            bytesAmount = sock.recv(buffer, sizeof(buffer), addr); // Receber o pacote DATA
+
+            data = new DATA(buffer, bytesAmount);
+
+
+            if (data->getOpcode() == 3 && data->getBlock() == ack->getBlock()+1){ // Verificando se o pacote recebido é o certo
+		cout << "Recebeu pacote DATA " << data->getBlock() << endl;
+		outputFile->write(data->getData(), data->dataSize());
+		ack->increment();
+                if (data->dataSize() < 512){ // Último pacote data
+                    sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
+                    outputFile->close(); // O arquivo é sincronizado no armazenamento
+	            estado = Estado::Fim;
+	        }
+
+	    } else {
+		error = new ERROR(4);
+		cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+		sock.send(error->data(), error->size(), addr);
+		estado = Estado::Fim;
+		start();
+	    }
+            
             break;
         
         case Estado::Fim:
