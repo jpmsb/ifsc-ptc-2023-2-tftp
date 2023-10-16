@@ -77,6 +77,7 @@ void TFTPServer::handle() {
                     }
 
                 } else if (request->getOpcode() > 2 && request->getOpcode() < 6){
+                    cout << "Recebeu opcode " << request->getOpcode() << endl;
                     error = new ERROR(4);
                     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                     sock.send(error->data(), error->size(), addr);
@@ -100,7 +101,7 @@ void TFTPServer::handle() {
         case Estado::Transmitir:
             cout << "Estado Transmitir" << endl;
 
-            if (data->dataSize() < 512){ // Último pacote data
+            if (data->dataSize() < 512 || data->getBlock() == 65535){ // Último pacote data
                 estado = Estado::Fim;
             }
 
@@ -135,7 +136,7 @@ void TFTPServer::handle() {
 		cout << "Recebeu pacote DATA " << data->getBlock() << endl;
 		outputFile->write(data->getData(), data->dataSize());
 		ack->increment();
-                if (data->dataSize() < 512){ // Último pacote data
+                if (data->dataSize() < 512 || data->getBlock() == 65535){ // Último pacote data
                     sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
                     outputFile->close(); // O arquivo é sincronizado no armazenamento
 	            estado = Estado::Fim;
