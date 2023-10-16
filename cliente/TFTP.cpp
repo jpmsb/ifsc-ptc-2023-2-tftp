@@ -153,8 +153,8 @@ void TFTP::handle() {
             // Verifica se o pacote recebido realmente é um ACK
             if (ack->getOpcode() == 4) {
                 // Se os dados recebidos possuírem 512 bytes, continue a transmissão
+                data->increment(); // Incrementar o número de bloco
                 if (data->dataSize() >= 512) {
-                    data->increment(); // Incrementar o número de bloco
                     sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
                 } else { // Último pacote
                     sock.send((char*)data, data->size(), addr); // Enviar o último DATA
