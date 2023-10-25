@@ -19,6 +19,7 @@ TFTPServer::~TFTPServer(){
 }
 
 void TFTPServer::handle() {
+    uint16_t ackBlock = 0;
     switch (estado) {
         case Estado::Espera:
             cout << "Estado Espere" << endl;
@@ -52,6 +53,7 @@ void TFTPServer::handle() {
                     } else {
                         estado = Estado::Transmitir;
                         data = new DATA(filepath);
+                        ack = new ACK();
                         enable_timeout();
                         start();
                     }
@@ -71,6 +73,7 @@ void TFTPServer::handle() {
                     } else {
                         estado = Estado::Receber;
                         ack = new ACK();
+                        data = new DATA();
                         outputFile = new ofstream(filepath);
                         enable_timeout();
                         start();
@@ -101,14 +104,14 @@ void TFTPServer::handle() {
         case Estado::Transmitir:
             cout << "Estado Transmitir" << endl;
 
-            if (data->dataSize() < 512 || data->getBlock() == 65535){ // Último pacote data
+            if (data->dataSize() < 512){ // Último pacote data
                 estado = Estado::Fim;
             }
 
             sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
             sock.recv(buffer, 4, addr); // Receber o pacote ACK
 
-            ack = new ACK(buffer);
+            ack->setBytes(buffer);
 
             if (ack->getOpcode() == 4 && ack->getBlock() == data->getBlock()){ // Verificando se o pacote recebido é o certo
                 cout << "Recebeu pacote ACK " << ack->getBlock() << endl;
@@ -129,14 +132,14 @@ void TFTPServer::handle() {
             sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
             bytesAmount = sock.recv(buffer, sizeof(buffer), addr); // Receber o pacote DATA
 
-            data = new DATA(buffer, bytesAmount);
+            data->setBytes(buffer, bytesAmount);
+            ackBlock = data->getBlock() - 1;
 
-
-            if (data->getOpcode() == 3 && data->getBlock() == ack->getBlock()+1){ // Verificando se o pacote recebido é o certo
+            if (data->getOpcode() == 3 && ackBlock == ack->getBlock()){ // Verificando se o pacote recebido é o certo
 		cout << "Recebeu pacote DATA " << data->getBlock() << endl;
 		outputFile->write(data->getData(), data->dataSize());
 		ack->increment();
-                if (data->dataSize() < 512 || data->getBlock() == 65535){ // Último pacote data
+                if (data->dataSize() < 512){ // Último pacote data
                     sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
                     outputFile->close(); // O arquivo é sincronizado no armazenamento
 	            estado = Estado::Fim;
