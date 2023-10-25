@@ -67,4 +67,5 @@ void DATA::setBytes(char bytes[], size_t size){
     memcpy(&block, bytes + uint16Size, uint16Size);
     memcpy(data, bytes+4, size-4);
     bytesAmount = size-4;
+    count = ntohs(block);
 }
