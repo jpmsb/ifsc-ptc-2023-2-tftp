@@ -46,4 +46,6 @@ class TFTP: public Callback {
   ofstream * outputFile;
   char buffer[516];
   int bytesAmount;
+  uint8_t timeoutCounter;
+  bool timeoutState;
 };

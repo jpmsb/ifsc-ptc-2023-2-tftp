@@ -11,7 +11,7 @@ using namespace std;
 // sourceFile: referência para uma string que contém o nome do arquivo de origem
 // destinationFile: referência para uma string que contém o nome do arquivo de destino
 TFTP::TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Operation operation, string & sourceFile, string & destinationFile)
-    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), wrq(0), rrq(0), data(0), ack(0), error(0), outputFile(0) {
+    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), wrq(0), rrq(0), data(0), ack(0), error(0), outputFile(0), timeoutState(false), timeoutCounter(0), estado(Estado::Conexao) {
     // Por garantia, desabilita o timeout
     disable_timeout();
 
@@ -29,8 +29,6 @@ TFTP::TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Opera
         rrq = new RRQ(srcFile);
     }
 
-    // Passa para o primeiro estado
-    estado = Estado::Conexao;
     start(); // inicializa primeiro pacote
   }
 
@@ -48,12 +46,21 @@ void TFTP::handle() {
         case Estado::Conexao:
             // Rotina inicial da operação para envio de arquivo
             if (operation == Operation::SEND){
+                if (timeoutState) {
+		    timeoutState = false;
+		    sock.send(wrq->data(), wrq->size(), addr);
+		    reload_timeout();
+		    return;
+		}
+
                 // Inicia a comunicação, enviando um pacote WRQ
                 sock.send(wrq->data(), wrq->size(), addr);
+                enable_timeout();
 
                 // Esperando a resposta do servidor e guardando
                 // a mesma em um arranjo de char chamado buffer
                 sock.recv(buffer, sizeof(buffer), addr);
+                disable_timeout();
                
                 // Instanciação do pacote ACK
                 ack = new ACK();
@@ -69,6 +76,7 @@ void TFTP::handle() {
 
                     // Muda o estado para Transmitir
                     estado = Estado::Transmitir;
+                    enable_timeout();
 
                 } else if (ack->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
                    // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
@@ -81,18 +89,28 @@ void TFTP::handle() {
                    // Como não receberá mais pacotes do servidor,
                    // para que a máquina de estados finalize, é
                    // preciso chamar a mesma mais uma vez
-                   start();
+                   finish();
+                   return;
 
                 } else {                    // Se acontece qualquer outra coisa
                    estado = Estado::Fim;    // além do esperado, vá para o estado Fim
-                   start();  // Chama a máquna de estados uma última vez
+                   finish();
+                   return;
                 };
 
 
             // Rotina inicial da operação para recebimento de arquivo
             } else if (operation == Operation::RECEIVE){
+                if (timeoutState) {
+                    timeoutState = false;
+                    sock.send(rrq->data(), rrq->size(), addr);
+                    reload_timeout();
+                    return;
+                }
+
                 // Inicia a comunicação, enviando um pacote RRQ
                 sock.send(rrq->data(), rrq->size(), addr);
+                enable_timeout();
 
                 // Esperando a resposta do servidor e guardando
                 // a mesma em um arranjo de char chamado buffer
@@ -117,10 +135,12 @@ void TFTP::handle() {
                    if (data->dataSize() < 512) {
 		       outputFile->close(); // O arquivo é sincronizado no armazenamento
 		       estado = Estado::Fim;  // o estado é definido para o Fim
-		       start(); // A máquina de estados é chamada uma última vez
+                       finish();
+		       return;
 		   } else {
                        // O estado muda para Receber
                        estado = Estado::Receber;
+                       reload_timeout();
                    }
                    
                 } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
@@ -134,17 +154,26 @@ void TFTP::handle() {
                    // Como não receberá mais pacotes do servidor,
                    // para que a máquina de estados finalize, é
                    // preciso chamar a mesma mais uma vez
-                   start();
+                   finish();
+                   return;
 
                 } else {                    // Se acontecer qualquer outra coisa
                    estado = Estado::Fim;    // além do esperado, vá para o estado Fim
-                   start();  // Chama a máquna de estados uma última vez
+                   finish();
+                   return;
                 };
                 
             }
             break;
 
         case Estado::Transmitir:
+            if (timeoutState) {
+		timeoutState = false;
+		sock.send((char*)data, data->size(), addr);
+		reload_timeout();
+                return;
+	    }
+
             // Recebimento do possível ACK do servidor após o envio do
             // primeiro pacote DATA
             sock.recv(buffer, sizeof(buffer), addr);
@@ -159,7 +188,7 @@ void TFTP::handle() {
                 } else { // Último pacote
                     sock.send((char*)data, data->size(), addr); // Enviar o último DATA
                     estado = Estado::Fim; // Mudar o estado para o fim
-                    start(); // Chamar a máquina de estados uma última vez
+                    return;
                 }
 
             } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
@@ -173,16 +202,25 @@ void TFTP::handle() {
                // Como não receberá mais pacotes do servidor,
                // para que a máquina de estados finalize, é
                // preciso chamar a mesma mais uma vez
-               start();
+               finish();
+               return;
            
-            } else {                  // Se acontece qualquer outra coisa
+            } else {                  // Se acontecer qualquer outra coisa
                estado = Estado::Fim;  // além do esperado, vá para o estado Fim
-               start();  // Chama a máquna de estados uma última vez
+               finish();
+               return;
             }
 
             break;
         
         case Estado::Receber:
+            if (timeoutState) {
+                timeoutState = false;
+                sock.send((char*)ack, sizeof(ACK), addr);
+                reload_timeout();
+                return;
+            }
+
             // Recebimento do possível DATA do servidor
             // // bytesAmount armazena a quantidade de bytes recebidos
             bytesAmount = sock.recv(buffer, 516, addr);
@@ -202,7 +240,8 @@ void TFTP::handle() {
                if (data->dataSize() < 512) {
                    outputFile->close(); // O arquivo é sincronizado no armazenamento
                    estado = Estado::Fim;  // o estado é definido para o Fim
-                   start(); // A máquina de estados é chamada uma última vez
+                   finish();
+                   return;
                }
   
             } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
@@ -212,11 +251,13 @@ void TFTP::handle() {
                // Dado o erro, o próximo estado é o fim.
                estado = Estado::Fim;
                throw error;
-               start(); // A máquina de estados é chamada uma última vez
+               // finish();
+               return; // Retorna para o poller
 
             } else { // Para qualquer outro evento o estado é o fim
                estado = Estado::Fim;
-               start();
+               finish();
+               return;
             }
             break;
         
@@ -228,7 +269,18 @@ void TFTP::handle() {
 }
 
 void TFTP::handle_timeout() {
-    start();
+    cout << "Timeout: " << (int)timeoutCounter << endl;
+    timeoutState = true;
+    if (timeoutCounter == 3) {
+        estado = Estado::Fim;
+        string error = "Timeout!";
+        throw error;
+        finish();
+    } else {
+        timeoutCounter++;
+        reload_timeout();
+        start();
+    }
 }
 
 void TFTP::start() {
