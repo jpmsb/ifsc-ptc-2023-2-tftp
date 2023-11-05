@@ -17,6 +17,8 @@ class TFTPServer: public Callback {
   TFTPServer(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, string rootDirectory);
   ~TFTPServer();
 
+  void resetAll();
+
  private:
   void handle();
   void handle_timeout();
@@ -39,4 +41,5 @@ class TFTPServer: public Callback {
   char buffer[516];
   int bytesAmount;
   uint8_t timeoutCounter;
+  bool timeoutState;
 };

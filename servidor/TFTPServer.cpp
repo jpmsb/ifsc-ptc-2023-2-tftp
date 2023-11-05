@@ -3,7 +3,7 @@
 using namespace std;
 
 TFTPServer::TFTPServer(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, string rootDirectory)
-    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), request(0), data(0), ack(0), error(0), outputFile(0), rootDir(rootDirectory), estado(Estado::Espera) {
+    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), request(0), data(0), ack(0), error(0), outputFile(0), rootDir(rootDirectory), estado(Estado::Espera), timeoutState(false) {
     // Por garantia, desabilita o timeout
     disable_timeout();
 
@@ -11,11 +11,7 @@ TFTPServer::TFTPServer(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int ti
   }
 
 TFTPServer::~TFTPServer(){
-    if (request != 0) delete request;
-    if (data != 0) delete data;
-    if (ack != 0) delete ack;
-    if (error != 0) delete error;
-    if (outputFile != 0) delete outputFile;
+    resetAll();
 }
 
 void TFTPServer::handle() {
@@ -40,22 +36,22 @@ void TFTPServer::handle() {
                         error = new ERROR(1);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
-			estado = Estado::Fim;
-			start();
+			return;
 
                     // Testa se o arquivo tem permissão de leitura
 		    } else if (access(filepath.c_str(), R_OK) == -1){
                         error = new ERROR(2);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
-                        estado = Estado::Fim;
-                        start();
+                        return;
                     } else {
                         estado = Estado::Transmitir;
                         data = new DATA(filepath);
                         ack = new ACK();
+                        cout << "Passando para o estado Transmitir" << endl;
+                        sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
                         enable_timeout();
-                        start();
+                        return;
                     }
 
                 } else if (request->getOpcode() == 2){
@@ -67,16 +63,16 @@ void TFTPServer::handle() {
                         error = new ERROR(6);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
-                        estado = Estado::Fim;
-                        start();
+                        return;
 
                     } else {
                         estado = Estado::Receber;
                         ack = new ACK();
                         data = new DATA();
                         outputFile = new ofstream(filepath);
+                        sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
                         enable_timeout();
-                        start();
+                        return;
                     }
 
                 } else if (request->getOpcode() > 2 && request->getOpcode() < 6){
@@ -84,88 +80,131 @@ void TFTPServer::handle() {
                     error = new ERROR(4);
                     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                     sock.send(error->data(), error->size(), addr);
-                    estado = Estado::Fim;
-                    start();
+                    return;
 
                 } else {
                     error = new ERROR(0);
                     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                     sock.send(error->data(), error->size(), addr);
-                    estado = Estado::Fim;
-                    start();
+                    return;
                     
                 }
 	    } else {
 		cout << "Erro ao receber pacote" << endl;
-		estado = Estado::Fim;
+		return;
 	    }
             break;
 
         case Estado::Transmitir:
             cout << "Estado Transmitir" << endl;
 
-            if (data->dataSize() < 512){ // Último pacote data
-                estado = Estado::Fim;
-            }
+            if (timeoutState) {
+		cout << "Reenviando pacote DATA..." << endl;
+                sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
+		timeoutState = false;
+                reload_timeout();
+                return;
+	    }
 
-            sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
             sock.recv(buffer, 4, addr); // Receber o pacote ACK
-
             ack->setBytes(buffer);
 
             if (ack->getOpcode() == 4 && ack->getBlock() == data->getBlock()){ // Verificando se o pacote recebido é o certo
                 cout << "Recebeu pacote ACK " << ack->getBlock() << endl;
-                data->increment();
+                if (data->dataSize() < 512){ // Último pacote data
+                    cout << "Último pacote ACK" << endl;
+                    estado = Estado::Espera;
+                    disable_timeout();
+                    return;
+                } else {
+                   data->increment();
+                   sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
+                   reload_timeout();
+                }
+                return;
             } else {
                 error = new ERROR(4);
                 cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                 sock.send(error->data(), error->size(), addr);
-                estado = Estado::Fim;
-                start();
+                estado = Estado::Espera;
+                disable_timeout();
+                return;
             }
-
             break;
         
         case Estado::Receber:
             cout << "Estado Receber" << endl;
 
-            sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
-            bytesAmount = sock.recv(buffer, sizeof(buffer), addr); // Receber o pacote DATA
+            if (timeoutState) {
+	        cout << "Reenviando pacote ACK..." << endl;
+                sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
+	        timeoutState = false;
+                reload_timeout();
+                return;
+	    }
 
+            bytesAmount = sock.recv(buffer, sizeof(buffer), addr); // Receber o pacote DATA
             data->setBytes(buffer, bytesAmount);
             ackBlock = data->getBlock() - 1;
 
             if (data->getOpcode() == 3 && ackBlock == ack->getBlock()){ // Verificando se o pacote recebido é o certo
-		cout << "Recebeu pacote DATA " << data->getBlock() << endl;
+		cout << "Recebeu pacote DATA " << data->getBlock() << ", Tamanho: " << data->dataSize() << endl;
 		outputFile->write(data->getData(), data->dataSize());
 		ack->increment();
+                sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
                 if (data->dataSize() < 512){ // Último pacote data
-                    sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
                     outputFile->close(); // O arquivo é sincronizado no armazenamento
-	            estado = Estado::Fim;
+                    estado = Estado::Espera;
+                    disable_timeout();
+                    return;
 	        }
 
 	    } else {
 		error = new ERROR(4);
 		cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
 		sock.send(error->data(), error->size(), addr);
-		estado = Estado::Fim;
-		start();
+		estado = Estado::Espera;
+                disable_timeout();
+		return;
 	    }
             
             break;
         
         case Estado::Fim:
+            cout << "Estado Fim" << endl;
             estado = Estado::Espera;
-            start();
+            return;
             break;
     }
 }
 
 void TFTPServer::handle_timeout() {
-    start();
+    cout << "Timeout: " << (int)timeoutCounter << endl;
+    timeoutState = true;
+    if (timeoutCounter == 3) {
+        cout << "Timeout: voltando para o estado de espera." << endl;
+        resetAll();
+	return;
+    } else {
+        timeoutCounter++;
+        reload_timeout();
+        start();
+    }
 }
 
 void TFTPServer::start() {
     handle();
+}
+
+void TFTPServer::resetAll() {
+    if (request != 0) delete request;
+    if (data != 0) delete data;
+    if (ack != 0) delete ack;
+    if (error != 0) delete error;
+    if (outputFile != 0) delete outputFile;
+    estado = Estado::Espera;
+    bytesAmount = 0;
+    timeoutCounter = 0;
+    timeoutState = false;
+    disable_timeout();
 }
