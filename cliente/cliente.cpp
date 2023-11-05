@@ -33,7 +33,7 @@ int main(int argc, char * argv[]) {
 
     try {
         // Cria um objeto TFTP com timeout de 3 segundos
-        TFTP * cb_tftp = new TFTP(sock, addr, 3, operation, arq_origem, arq_destino);
+        TFTP * cb_tftp = new TFTP(sock, addr, 3000, operation, arq_origem, arq_destino);
 
         // Adiciona o objeto TFTP ao poller
         sched.adiciona(cb_tftp);
@@ -42,6 +42,8 @@ int main(int argc, char * argv[]) {
         cout << "Transação realizada com sucesso!!" << endl;
     } catch(ERROR * e){
         cerr << "Erro " << e->getErrorCode() << ": " << e->getErrorMessage() << endl;
+    } catch (string & e) {
+	cerr << "Erro: " << e << endl;
     }
    
     return 0;
