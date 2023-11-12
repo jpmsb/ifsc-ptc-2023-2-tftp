@@ -22,7 +22,7 @@ class ERROR {
         void setBytes(char bytes[], size_t size); 
 
     private:
-        string tftpErrorMessages[8] = { 
+        string tftpErrorMessages[9] = { 
             "Not defined, see error message (if any).",
             "File not found.",
             "Access violation.",
@@ -30,7 +30,8 @@ class ERROR {
             "Illegal TFTP operation.",
             "Unknown transfer ID.",
             "File already exists.",
-            "No such user."
+            "No such user.",
+            "Parent directory does not exist."
         };
         uint16_t opcode;
         uint16_t errorCode;
