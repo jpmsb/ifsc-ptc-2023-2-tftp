@@ -6,6 +6,9 @@
 #include "ACK.h"
 #include "ERROR.h"
 #include <unistd.h>
+#include "tftp2.pb.h"
+#include <filesystem>
+#include <sys/stat.h>
 #include <iostream>
 
 using namespace std;
@@ -17,9 +20,10 @@ class TFTPServer: public Callback {
   TFTPServer(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, string rootDirectory);
   ~TFTPServer();
 
-  void resetAll();
-
  private:
+  int createDirectory(string path);
+  void resetAll();
+  void clearAll();
   void handle();
   void handle_timeout();
   void start();
@@ -27,6 +31,9 @@ class TFTPServer: public Callback {
       Espera,
       Transmitir,
       Receber,
+      Listar,
+      CriarDiretorio,
+      Mover,
       Fim
   };
   Estado estado;
@@ -42,4 +49,5 @@ class TFTPServer: public Callback {
   int bytesAmount;
   uint8_t timeoutCounter;
   bool timeoutState;
+  tftp2::Mensagem * desserializedMessage;
 };

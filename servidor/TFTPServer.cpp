@@ -3,7 +3,7 @@
 using namespace std;
 
 TFTPServer::TFTPServer(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, string rootDirectory)
-    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), request(0), data(0), ack(0), error(0), outputFile(0), rootDir(rootDirectory), estado(Estado::Espera), timeoutState(false) {
+    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), request(0), data(0), ack(0), error(0), outputFile(0), desserializedMessage(0), rootDir(rootDirectory), estado(Estado::Espera), timeoutState(false) {
     // Por garantia, desabilita o timeout
     disable_timeout();
 
@@ -20,13 +20,54 @@ void TFTPServer::handle() {
         case Estado::Espera:
             cout << "Estado Espere" << endl;
             disable_timeout();
+
             // Recebe o pacote
             bytesAmount = sock.recv(buffer, sizeof(buffer), addr);
            
             if (bytesAmount > 0) {
                 request = new Request(buffer, bytesAmount);
+                string serializedMessage(buffer);
+                desserializedMessage = new tftp2::Mensagem();
+                desserializedMessage->ParseFromString(serializedMessage);
 
-                if (request->getOpcode() == 1){
+                if (desserializedMessage->has_list()){
+                    cout << "Recebeu um LIST" << endl;
+                    cout << "Diretório: " << desserializedMessage->list().path() << endl;
+
+                } else if (desserializedMessage->has_move()){
+                    cout << "Recebeu um MOVE" << endl;
+                    cout << "Nome antigo: " << desserializedMessage->move().old_name() << endl;
+                    cout << "Nome novo: " << desserializedMessage->move().new_name() << endl;
+
+                } else if (desserializedMessage->has_mkdir()){
+                    cout << "Recebeu um MKDIR" << endl;
+                    cout << "Diretório: " << desserializedMessage->mkdir().path() << endl;
+                    string fullPath = rootDir + "/" + desserializedMessage->mkdir().path();
+
+                    int mkdirResult = createDirectory(fullPath);
+
+                    if (mkdirResult == 0) {
+                        cout << "Diretório criado com sucesso!" << endl;
+                        ack = new ACK();
+                        sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
+
+                    } else {
+                        if (mkdirResult == EACCES || mkdirResult == EFAULT || mkdirResult == EROFS) {
+                            error = new ERROR(2);
+                        } else if (mkdirResult == EDQUOT || mkdirResult == ENOSPC) {
+                            error = new ERROR(3);
+		        } else if (mkdirResult == EEXIST) {
+                            error = new ERROR(6);
+		        } else {
+                            error = new ERROR(0);
+		        }
+                        sock.send(error->data(), error->size(), addr);
+                    }
+
+                    clearAll();
+                    return; 
+
+                } else if (request->getOpcode() == 1){
                     cout << "Recebeu um RRQ" << endl;
                     string filepath = rootDir + "/" + request->getFilename();
 
@@ -170,6 +211,40 @@ void TFTPServer::handle() {
             
             break;
         
+        case Estado::Listar:
+            cout << "Estado Listar" << endl;
+            struct stat sb;  // Struct para diferenciar um arquivo de um diretório
+            for (const auto& entry : filesystem::directory_iterator(rootDir)) {
+                string itemName = entry.path().string(); // Nome do arquivo ou diretório
+
+                const char* item = itemName.c_str();
+                int pos = itemName.find_last_of('/');       // Posição da última barra
+                
+                // Validando se o elemento é um arquivo ou diretório
+                if (stat(item, &sb) == 0 && (sb.st_mode & S_IFDIR)) {
+                    cout << itemName.substr(pos + 1) << "/" << endl;
+                } else {
+                    cout << itemName.substr(pos + 1) << endl;
+                }
+            }    
+            break;
+
+        case Estado::CriarDiretorio:
+            cout << "Estado CriarDiretorio" << endl;
+
+            // // Se a criação do diretório falhar, envia um pacote de erro
+	    // if (mkdir(request->getFilename().c_str(), 0700) == -1){
+	    //     error = new ERROR(2);
+	    //     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+	    //     sock.send(error->data(), error->size(), addr);
+	    //     return;
+	    // }
+            return;
+	    break;
+
+        case Estado::Mover:
+	    break;
+
         case Estado::Fim:
             cout << "Estado Fim" << endl;
             estado = Estado::Espera;
@@ -196,15 +271,26 @@ void TFTPServer::start() {
     handle();
 }
 
-void TFTPServer::resetAll() {
+void TFTPServer::clearAll() {
     if (request != 0) delete request;
     if (data != 0) delete data;
     if (ack != 0) delete ack;
     if (error != 0) delete error;
     if (outputFile != 0) delete outputFile;
-    estado = Estado::Espera;
+    if (desserializedMessage != 0) delete desserializedMessage;
     bytesAmount = 0;
     timeoutCounter = 0;
     timeoutState = false;
-    disable_timeout();
+}
+
+void TFTPServer::resetAll() {
+    clearAll();
+    estado = Estado::Espera;
+}
+
+int TFTPServer::createDirectory(string path) {
+    if (mkdir(path.c_str(), 0700) == -1){
+	return errno;
+    }
+    return 0;
 }
