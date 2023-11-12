@@ -31,7 +31,7 @@ class ERROR {
             "Unknown transfer ID.",
             "File already exists.",
             "No such user.",
-            "Parent directory does not exist."
+            "File or parent directory does not exists."
         };
         uint16_t opcode;
         uint16_t errorCode;
