@@ -326,6 +326,7 @@ ERROR* TFTPServer::createErrorFromSysCallError(int errorNumber) {
     else if (errorNumber == EDQUOT || errorNumber == ENOSPC) error = new ERROR(3);
     else if (errorNumber == EEXIST) error = new ERROR(6);
     else if (errorNumber == ENOENT) error = new ERROR(8);
+    else if (errorNumber == ENOTEMPTY) error = new ERROR(9);
     else error = new ERROR(0);
 
     return error;
