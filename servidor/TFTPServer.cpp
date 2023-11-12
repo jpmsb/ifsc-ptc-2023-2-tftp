@@ -35,35 +35,38 @@ void TFTPServer::handle() {
                     cout << "Diretório: " << desserializedMessage->list().path() << endl;
 
                 } else if (desserializedMessage->has_move()){
-                    cout << "Recebeu um MOVE" << endl;
-                    cout << "Nome antigo: " << desserializedMessage->move().old_name() << endl;
-                    cout << "Nome novo: " << desserializedMessage->move().new_name() << endl;
+                    string oldName = desserializedMessage->move().old_name();
+                    string newName = desserializedMessage->move().new_name();
+
+                    if (newName.size() > 0) cout << "Renomeando \"" << oldName << "\" para \"" << newName << "\"" << endl;
+		    else cout << "Removendo \"" << oldName << "\"" << endl;
+
+                    int moveResult = moveElement(oldName, newName);
+                    if (moveResult == 0) {
+			ack = new ACK();
+			sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
+
+		    } else {
+			error = createErrorFromSysCallError(moveResult);
+			cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+			sock.send(error->data(), error->size(), addr);
+		    }
 
                 } else if (desserializedMessage->has_mkdir()){
-                    cout << "Recebeu um MKDIR" << endl;
-                    cout << "Diretório: " << desserializedMessage->mkdir().path() << endl;
+                    cout << "Criando diretório: " << desserializedMessage->mkdir().path() << endl;
                     string fullPath = rootDir + "/" + desserializedMessage->mkdir().path();
 
                     int mkdirResult = createDirectory(fullPath);
 
                     if (mkdirResult == 0) {
-                        cout << "Diretório criado com sucesso!" << endl;
                         ack = new ACK();
                         sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
 
                     } else {
-                        if (mkdirResult == EACCES || mkdirResult == EFAULT || mkdirResult == EROFS) {
-                            error = new ERROR(2);
-                        } else if (mkdirResult == EDQUOT || mkdirResult == ENOSPC) {
-                            error = new ERROR(3);
-		        } else if (mkdirResult == EEXIST) {
-                            error = new ERROR(6);
-		        } else {
-                            error = new ERROR(0);
-		        }
+                        error = createErrorFromSysCallError(mkdirResult);
+                        cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
                     }
-
                     clearAll();
                     return; 
 
@@ -229,19 +232,6 @@ void TFTPServer::handle() {
             }    
             break;
 
-        case Estado::CriarDiretorio:
-            cout << "Estado CriarDiretorio" << endl;
-
-            // // Se a criação do diretório falhar, envia um pacote de erro
-	    // if (mkdir(request->getFilename().c_str(), 0700) == -1){
-	    //     error = new ERROR(2);
-	    //     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
-	    //     sock.send(error->data(), error->size(), addr);
-	    //     return;
-	    // }
-            return;
-	    break;
-
         case Estado::Mover:
 	    break;
 
@@ -272,12 +262,30 @@ void TFTPServer::start() {
 }
 
 void TFTPServer::clearAll() {
-    if (request != 0) delete request;
-    if (data != 0) delete data;
-    if (ack != 0) delete ack;
-    if (error != 0) delete error;
-    if (outputFile != 0) delete outputFile;
-    if (desserializedMessage != 0) delete desserializedMessage;
+    if (request != 0) 
+        delete request;
+        request = 0;
+
+    if (data != 0) 
+        delete data;
+        data = 0;
+
+    if (ack != 0)
+        delete ack;
+        ack = 0;
+
+    if (error != 0)
+        delete error;
+        error = 0;
+
+    if (outputFile != 0)
+        delete outputFile;
+        outputFile = 0;
+
+    if (desserializedMessage != 0)
+        delete desserializedMessage;
+        desserializedMessage = 0;
+
     bytesAmount = 0;
     timeoutCounter = 0;
     timeoutState = false;
@@ -293,4 +301,32 @@ int TFTPServer::createDirectory(string path) {
 	return errno;
     }
     return 0;
+}
+
+int TFTPServer::moveElement(string oldName, string newName) {
+    string oldPath = rootDir + "/" + oldName;
+
+    if (newName.size() > 0){
+        string newPath = rootDir + "/" + newName;
+        if (rename(oldPath.c_str(), newPath.c_str()) == -1){
+            return errno;
+        }
+    } else {
+	if (remove(oldPath.c_str()) == -1){
+	    return errno;
+	}
+    }
+    return 0;
+}
+
+ERROR* TFTPServer::createErrorFromSysCallError(int errorNumber) {
+    ERROR * error;
+
+    if (errorNumber == EACCES || errorNumber == EFAULT || errorNumber == EROFS) error = new ERROR(2);
+    else if (errorNumber == EDQUOT || errorNumber == ENOSPC) error = new ERROR(3);
+    else if (errorNumber == EEXIST) error = new ERROR(6);
+    else if (errorNumber == ENOENT) error = new ERROR(8);
+    else error = new ERROR(0);
+
+    return error;
 }

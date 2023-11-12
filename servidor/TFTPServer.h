@@ -22,6 +22,8 @@ class TFTPServer: public Callback {
 
  private:
   int createDirectory(string path);
+  int moveElement(string oldName, string newName);
+  ERROR* createErrorFromSysCallError(int errorNumber);
   void resetAll();
   void clearAll();
   void handle();
@@ -32,7 +34,6 @@ class TFTPServer: public Callback {
       Transmitir,
       Receber,
       Listar,
-      CriarDiretorio,
       Mover,
       Fim
   };
