@@ -10,8 +10,17 @@ int main(int argc, char * argv[]) {
     string end_servidor = argv[1];
     int porta = stoi(argv[2]);
     string operacao = argv[3];
-    string arq_origem = argv[4];
-    string arq_destino = argv[5];
+    string arq_origem = "";
+    string arq_destino = "";
+
+    if (argc > 4){
+	arq_origem = argv[4];
+    }
+
+    if (argc > 5){
+        arq_destino = argv[5];
+    }
+
     TFTP::Operation operation;
 
     // Seleciona a operação com base na entrada do usuário
@@ -21,6 +30,19 @@ int main(int argc, char * argv[]) {
     } else if (operacao == "receber"){
         cout << "Recebendo o arquivo \"" << arq_origem << "\" do servidor e salvando como \"" << arq_destino << "\"..." << endl;
         operation = TFTP::RECEIVE;
+    } else if (operacao == "listar"){
+	cout << "Listando os arquivos do servidor..." << endl;
+	operation = TFTP::LIST;
+    } else if (operacao == "mover"){
+        if (arq_destino.size() > 0) {
+            cout << "Renomeando o arquivo \"" << arq_origem << "\" para \"" << arq_destino << "\"..." << endl;
+        } else {
+            cout << "Removendo o arquivo \"" << arq_origem << "\"..." << endl;
+        }
+        operation = TFTP::MOVE;
+    } else if (operacao == "criardir"){
+        cout << "Criando o diretório \"" << arq_origem << "\"..." << endl;
+	operation = TFTP::MKDIR;
     } else {
         cout << "Operação inválida!!!" << endl;
         return 1;
