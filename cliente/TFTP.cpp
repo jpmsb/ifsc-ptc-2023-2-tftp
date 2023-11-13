@@ -11,24 +11,9 @@ using namespace std;
 // sourceFile: referência para uma string que contém o nome do arquivo de origem
 // destinationFile: referência para uma string que contém o nome do arquivo de destino
 TFTP::TFTP(sockpp::UDPSocket & sock, sockpp::AddrInfo & addr, int timeout, Operation operation, string & sourceFile, string & destinationFile)
-    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), wrq(0), rrq(0), data(0), ack(0), error(0), outputFile(0), timeoutState(false), timeoutCounter(0), estado(Estado::Conexao) {
+    : Callback(sock.get_descriptor(), timeout), sock(sock), addr(addr), operation(operation), srcFile(sourceFile), destFile(destinationFile), wrq(0), rrq(0), data(0), ack(0), error(0), outputFile(0), timeoutState(false), timeoutCounter(0), estado(Estado::Conexao), pbMessage(0) {
     // Por garantia, desabilita o timeout
     disable_timeout();
-
-    // Os pacotes que iniciam a comunicação com o servidor
-    // são criados baseados no tipo de operação, ou seja,
-    // são instanciados apenas se forem usados.
-    if (operation == Operation::SEND){
-        // Instanciação do pacote WRQ que salvará no
-        // servidor o arquivo com o nome em "destFile"
-        wrq = new WRQ(destFile);
-
-    } else if (operation == Operation::RECEIVE){
-        // Instanciação do pacote RRQ que está solicitando
-        // o arquivo com o nome salvo em "srcFile"
-        rrq = new RRQ(srcFile);
-    }
-
     start(); // inicializa primeiro pacote
   }
 
@@ -39,6 +24,7 @@ TFTP::~TFTP(){
     if (ack != 0) delete ack;
     if (error != 0) delete error;
     if (outputFile != 0) delete outputFile;
+    if (pbMessage != 0) delete pbMessage;
 }
 
 void TFTP::handle() {
@@ -54,6 +40,7 @@ void TFTP::handle() {
 		}
 
                 // Inicia a comunicação, enviando um pacote WRQ
+                wrq = new WRQ(destFile);
                 sock.send(wrq->data(), wrq->size(), addr);
                 enable_timeout();
 
@@ -109,6 +96,7 @@ void TFTP::handle() {
                 }
 
                 // Inicia a comunicação, enviando um pacote RRQ
+                rrq = new RRQ(srcFile);
                 sock.send(rrq->data(), rrq->size(), addr);
                 enable_timeout();
 
@@ -163,6 +151,61 @@ void TFTP::handle() {
                    return;
                 };
                 
+            } else if (operation == Operation::LIST){
+                cout << "Envia LIST" << endl;
+                
+            } else if (operation == Operation::MOVE){
+                if (timeoutState) {
+                    timeoutState = false;
+                    sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+                    reload_timeout();
+                    return;
+                }
+
+                pbMessage = new tftp2::Mensagem();
+                tftp2::MOVE* moveMessage = pbMessage->mutable_move();
+                moveMessage->set_old_name(srcFile);
+                moveMessage->set_new_name(destFile);
+                
+                serializedMessage = pbMessage->SerializeAsString();
+                sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+
+                bytesAmount = sock.recv(buffer, 516, addr);
+                ack = new ACK(buffer);
+
+                if (ack->getOpcode() == 4) {
+		    estado = Estado::Fim;
+		    finish();
+		    return;
+		} else if (ack->getOpcode() == 5) {
+		    error = new ERROR(buffer, bytesAmount);
+		    estado = Estado::Fim;
+		    throw error;
+		    finish();
+		    return;
+		}
+            } else if (operation == Operation::MKDIR){
+                pbMessage = new tftp2::Mensagem();
+                tftp2::PATH* mkdirMessage = pbMessage->mutable_mkdir();
+                mkdirMessage->set_path(srcFile);
+               
+                string serializedMessage = pbMessage->SerializeAsString();
+                sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+
+                bytesAmount = sock.recv(buffer, 516, addr);
+                ack = new ACK(buffer);
+
+                if (ack->getOpcode() == 4) {
+		    estado = Estado::Fim;
+		    finish();
+		    return;
+		} else if (ack->getOpcode() == 5) {
+		    error = new ERROR(buffer, bytesAmount);
+		    estado = Estado::Fim;
+		    throw error;
+		    finish();
+		    return;
+		}
             }
             break;
 
