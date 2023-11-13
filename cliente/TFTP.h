@@ -6,15 +6,19 @@
 #include "DATA.h"
 #include "ACK.h"
 #include "ERROR.h"
+#include "tftp2.pb.h"
 
 using namespace std;
 
 class TFTP: public Callback {
  public:
- // Enumeração que organiza as operações de envio e recebimento
+ // Enumeração que organiza as operações
  enum Operation {
      SEND,
      RECEIVE,
+     LIST,
+     MKDIR,
+     MOVE
  };
 
   // Construtor da classe que recebe todos os parâmetros
@@ -48,4 +52,6 @@ class TFTP: public Callback {
   int bytesAmount;
   uint8_t timeoutCounter;
   bool timeoutState;
+  tftp2::Mensagem * pbMessage;
+  string serializedMessage;
 };
