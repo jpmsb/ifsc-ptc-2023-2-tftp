@@ -5,6 +5,10 @@ ACK::ACK(){
     ACK::block = 0;
 }
 
+ACK::ACK(char bytes[]) {
+    setBytes(bytes);
+}
+
 void ACK::increment(){
     block = htons(ntohs(block)+1); 
 }
