@@ -19,6 +19,7 @@ void TFTPServer::handle() {
     switch (estado) {
         case Estado::Espera:
             cout << "Estado Espere" << endl;
+            clearAll();
             disable_timeout();
 
             // Recebe o pacote
@@ -67,8 +68,6 @@ void TFTPServer::handle() {
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
                     }
-                    clearAll();
-                    return; 
 
                 } else if (request->getOpcode() == 1){
                     cout << "Recebeu um RRQ" << endl;
@@ -80,14 +79,12 @@ void TFTPServer::handle() {
                         error = new ERROR(1);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
-			return;
 
                     // Testa se o arquivo tem permissão de leitura
 		    } else if (access(filepath.c_str(), R_OK) == -1){
                         error = new ERROR(2);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
-                        return;
                     } else {
                         estado = Estado::Transmitir;
                         data = new DATA(filepath);
@@ -95,7 +92,6 @@ void TFTPServer::handle() {
                         cout << "Passando para o estado Transmitir" << endl;
                         sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
                         enable_timeout();
-                        return;
                     }
 
                 } else if (request->getOpcode() == 2){
@@ -107,7 +103,6 @@ void TFTPServer::handle() {
                         error = new ERROR(6);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
-                        return;
 
                     } else {
                         estado = Estado::Receber;
@@ -116,7 +111,6 @@ void TFTPServer::handle() {
                         outputFile = new ofstream(filepath);
                         sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
                         enable_timeout();
-                        return;
                     }
 
                 } else if (request->getOpcode() > 2 && request->getOpcode() < 6){
@@ -124,19 +118,17 @@ void TFTPServer::handle() {
                     error = new ERROR(4);
                     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                     sock.send(error->data(), error->size(), addr);
-                    return;
 
                 } else {
                     error = new ERROR(0);
                     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                     sock.send(error->data(), error->size(), addr);
-                    return;
                     
                 }
 	    } else {
 		cout << "Erro ao receber pacote" << endl;
-		return;
 	    }
+            return;
             break;
 
         case Estado::Transmitir:
@@ -286,6 +278,7 @@ void TFTPServer::clearAll() {
         delete desserializedMessage;
         desserializedMessage = 0;
 
+    memset(buffer, 0, sizeof(buffer));
     bytesAmount = 0;
     timeoutCounter = 0;
     timeoutState = false;
