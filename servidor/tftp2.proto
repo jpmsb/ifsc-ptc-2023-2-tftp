@@ -1,0 +1,36 @@
+syntax = "proto2";
+
+package tftp2;
+
+message PATH {
+    required string path = 1;
+}
+
+message FILE{
+    required string name = 1;
+    required int32 size = 2;
+}
+
+message MOVE {
+    required string old_name = 1;
+    required string new_name = 2;
+}
+
+message ListResponse {
+    repeated ListItem items = 1;
+}
+
+message ListItem {
+    oneof answer{
+        FILE file = 1;
+        PATH directory = 2;
+    }
+}
+
+message Mensagem {
+    oneof tipo {
+	PATH list = 1;
+	MOVE move = 2;
+	PATH mkdir = 3;
+    }
+}
