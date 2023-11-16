@@ -153,7 +153,41 @@ void TFTP::handle() {
                 
             } else if (operation == Operation::LIST){
                 cout << "Envia LIST" << endl;
-                
+                if (timeoutState) {
+		    timeoutState = false;
+                    sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+		    reload_timeout();
+		    return;
+		}
+
+                pbMessage = new tftp2::Mensagem();
+                tftp2::PATH* listMessage = pbMessage->mutable_list();
+                listMessage->set_path(srcFile);
+               
+                string serializedMessage = pbMessage->SerializeAsString();
+                sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+
+                bytesAmount = sock.recv(buffer, 516, addr);
+                serializedMessage = string(buffer, bytesAmount);
+
+                pbMessage->ParseFromString(serializedMessage);
+
+                // Verificar o tipo da mensagem recebida
+                if (pbMessage->has_list_response()) {
+                    // Iterar sobre os itens na resposta recebida
+                    for (const tftp2::ListItem& item : pbMessage->list_response().items()) {
+                        if (item.has_file()) {
+                            std::cout << "Arquivo Recebido: " << item.file().name() << ", Tamanho: " << item.file().size() << " bytes\n";
+                        } else if (item.has_directory()) {
+                            std::cout << "Diretório Recebido: " << item.directory().path() << "\n";
+                        }
+                    }
+                } else {
+                    std::cout << "Mensagem recebida não é do tipo ListResponse.\n";
+                }
+                finish();
+                return;
+
             } else if (operation == Operation::MOVE){
                 if (timeoutState) {
                     timeoutState = false;
