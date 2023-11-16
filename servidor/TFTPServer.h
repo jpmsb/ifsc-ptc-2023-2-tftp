@@ -7,8 +7,8 @@
 #include "ERROR.h"
 #include <unistd.h>
 #include "tftp2.pb.h"
-#include <filesystem>
 #include <sys/stat.h>
+#include <dirent.h>
 #include <iostream>
 
 using namespace std;
@@ -23,6 +23,7 @@ class TFTPServer: public Callback {
  private:
   int createDirectory(string path);
   int moveElement(string oldName, string newName);
+  int listDirectoryContents(string path, tftp2::ListResponse * listResponse);
   ERROR* createErrorFromSysCallError(int errorNumber);
   void resetAll();
   void clearAll();
@@ -34,7 +35,6 @@ class TFTPServer: public Callback {
       Transmitir,
       Receber,
       Listar,
-      Mover,
       Fim
   };
   Estado estado;
