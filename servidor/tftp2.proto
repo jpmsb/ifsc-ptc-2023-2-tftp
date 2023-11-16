@@ -32,5 +32,6 @@ message Mensagem {
 	PATH list = 1;
 	MOVE move = 2;
 	PATH mkdir = 3;
+        ListResponse list_response = 4;
     }
 }

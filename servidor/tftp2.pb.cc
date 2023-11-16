@@ -202,6 +202,7 @@ const ::uint32_t TableStruct_tftp2_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
     PROTOBUF_FIELD_OFFSET(::tftp2::Mensagem, _impl_.tipo_),
 };
 
@@ -230,16 +231,17 @@ const char descriptor_table_protodef_tftp2_2eproto[] PROTOBUF_SECTION_VARIABLE(p
     "(\t\".\n\014ListResponse\022\036\n\005items\030\001 \003(\0132\017.tftp"
     "2.ListItem\"S\n\010ListItem\022\033\n\004file\030\001 \001(\0132\013.t"
     "ftp2.FILEH\000\022 \n\tdirectory\030\002 \001(\0132\013.tftp2.P"
-    "ATHH\000B\010\n\006answer\"j\n\010Mensagem\022\033\n\004list\030\001 \001("
-    "\0132\013.tftp2.PATHH\000\022\033\n\004move\030\002 \001(\0132\013.tftp2.M"
-    "OVEH\000\022\034\n\005mkdir\030\003 \001(\0132\013.tftp2.PATHH\000B\006\n\004t"
-    "ipo"
+    "ATHH\000B\010\n\006answer\"\230\001\n\010Mensagem\022\033\n\004list\030\001 \001"
+    "(\0132\013.tftp2.PATHH\000\022\033\n\004move\030\002 \001(\0132\013.tftp2."
+    "MOVEH\000\022\034\n\005mkdir\030\003 \001(\0132\013.tftp2.PATHH\000\022,\n\r"
+    "list_response\030\004 \001(\0132\023.tftp2.ListResponse"
+    "H\000B\006\n\004tipo"
 };
 static ::absl::once_flag descriptor_table_tftp2_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_tftp2_2eproto = {
     false,
     false,
-    363,
+    410,
     descriptor_table_protodef_tftp2_2eproto,
     "tftp2.proto",
     &descriptor_table_tftp2_2eproto_once,
@@ -1577,6 +1579,7 @@ class Mensagem::_Internal {
   static const ::tftp2::PATH& list(const Mensagem* msg);
   static const ::tftp2::MOVE& move(const Mensagem* msg);
   static const ::tftp2::PATH& mkdir(const Mensagem* msg);
+  static const ::tftp2::ListResponse& list_response(const Mensagem* msg);
 };
 
 const ::tftp2::PATH&
@@ -1590,6 +1593,10 @@ Mensagem::_Internal::move(const Mensagem* msg) {
 const ::tftp2::PATH&
 Mensagem::_Internal::mkdir(const Mensagem* msg) {
   return *msg->_impl_.tipo_.mkdir_;
+}
+const ::tftp2::ListResponse&
+Mensagem::_Internal::list_response(const Mensagem* msg) {
+  return *msg->_impl_.tipo_.list_response_;
 }
 void Mensagem::set_allocated_list(::tftp2::PATH* list) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
@@ -1636,6 +1643,21 @@ void Mensagem::set_allocated_mkdir(::tftp2::PATH* mkdir) {
   }
   // @@protoc_insertion_point(field_set_allocated:tftp2.Mensagem.mkdir)
 }
+void Mensagem::set_allocated_list_response(::tftp2::ListResponse* list_response) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  clear_tipo();
+  if (list_response) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(list_response);
+    if (message_arena != submessage_arena) {
+      list_response = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, list_response, submessage_arena);
+    }
+    set_has_list_response();
+    _impl_.tipo_.list_response_ = list_response;
+  }
+  // @@protoc_insertion_point(field_set_allocated:tftp2.Mensagem.list_response)
+}
 Mensagem::Mensagem(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor(arena);
@@ -1665,6 +1687,11 @@ Mensagem::Mensagem(const Mensagem& from)
     case kMkdir: {
       _this->_internal_mutable_mkdir()->::tftp2::PATH::MergeFrom(
           from._internal_mkdir());
+      break;
+    }
+    case kListResponse: {
+      _this->_internal_mutable_list_response()->::tftp2::ListResponse::MergeFrom(
+          from._internal_list_response());
       break;
     }
     case TIPO_NOT_SET: {
@@ -1725,6 +1752,12 @@ void Mensagem::clear_tipo() {
       }
       break;
     }
+    case kListResponse: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.tipo_.list_response_;
+      }
+      break;
+    }
     case TIPO_NOT_SET: {
       break;
     }
@@ -1771,6 +1804,15 @@ const char* Mensagem::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_mkdir(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // .tftp2.ListResponse list_response = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_list_response(), ptr);
           CHK_(ptr);
         } else {
           goto handle_unusual;
@@ -1824,6 +1866,12 @@ failure:
           _Internal::mkdir(this).GetCachedSize(), target, stream);
       break;
     }
+    case kListResponse: {
+      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(4, _Internal::list_response(this),
+          _Internal::list_response(this).GetCachedSize(), target, stream);
+      break;
+    }
     default: ;
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1864,6 +1912,13 @@ failure:
           *_impl_.tipo_.mkdir_);
       break;
     }
+    // .tftp2.ListResponse list_response = 4;
+    case kListResponse: {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.tipo_.list_response_);
+      break;
+    }
     case TIPO_NOT_SET: {
       break;
     }
@@ -1902,6 +1957,11 @@ void Mensagem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
           from._internal_mkdir());
       break;
     }
+    case kListResponse: {
+      _this->_internal_mutable_list_response()->::tftp2::ListResponse::MergeFrom(
+          from._internal_list_response());
+      break;
+    }
     case TIPO_NOT_SET: {
       break;
     }
@@ -1933,6 +1993,12 @@ bool Mensagem::IsInitialized() const {
     case kMkdir: {
       if (tipo_case() == kMkdir) {
         if (!_impl_.tipo_.mkdir_->IsInitialized()) return false;
+      }
+      break;
+    }
+    case kListResponse: {
+      if (tipo_case() == kListResponse) {
+        if (!_impl_.tipo_.list_response_->IsInitialized()) return false;
       }
       break;
     }

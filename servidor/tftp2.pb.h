@@ -1057,6 +1057,7 @@ class Mensagem final :
     kList = 1,
     kMove = 2,
     kMkdir = 3,
+    kListResponse = 4,
     TIPO_NOT_SET = 0,
   };
 
@@ -1140,6 +1141,7 @@ class Mensagem final :
     kListFieldNumber = 1,
     kMoveFieldNumber = 2,
     kMkdirFieldNumber = 3,
+    kListResponseFieldNumber = 4,
   };
   // .tftp2.PATH list = 1;
   bool has_list() const;
@@ -1195,6 +1197,24 @@ class Mensagem final :
   void unsafe_arena_set_allocated_mkdir(
       ::tftp2::PATH* mkdir);
   ::tftp2::PATH* unsafe_arena_release_mkdir();
+  // .tftp2.ListResponse list_response = 4;
+  bool has_list_response() const;
+  private:
+  bool _internal_has_list_response() const;
+
+  public:
+  void clear_list_response() ;
+  const ::tftp2::ListResponse& list_response() const;
+  PROTOBUF_NODISCARD ::tftp2::ListResponse* release_list_response();
+  ::tftp2::ListResponse* mutable_list_response();
+  void set_allocated_list_response(::tftp2::ListResponse* list_response);
+  private:
+  const ::tftp2::ListResponse& _internal_list_response() const;
+  ::tftp2::ListResponse* _internal_mutable_list_response();
+  public:
+  void unsafe_arena_set_allocated_list_response(
+      ::tftp2::ListResponse* list_response);
+  ::tftp2::ListResponse* unsafe_arena_release_list_response();
   void clear_tipo();
   TipoCase tipo_case() const;
   // @@protoc_insertion_point(class_scope:tftp2.Mensagem)
@@ -1203,6 +1223,7 @@ class Mensagem final :
   void set_has_list();
   void set_has_move();
   void set_has_mkdir();
+  void set_has_list_response();
 
   inline bool has_tipo() const;
   inline void clear_has_tipo();
@@ -1217,6 +1238,7 @@ class Mensagem final :
       ::tftp2::PATH* list_;
       ::tftp2::MOVE* move_;
       ::tftp2::PATH* mkdir_;
+      ::tftp2::ListResponse* list_response_;
     } tipo_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
@@ -1971,6 +1993,80 @@ inline ::tftp2::PATH* Mensagem::_internal_mutable_mkdir() {
 inline ::tftp2::PATH* Mensagem::mutable_mkdir() {
   ::tftp2::PATH* _msg = _internal_mutable_mkdir();
   // @@protoc_insertion_point(field_mutable:tftp2.Mensagem.mkdir)
+  return _msg;
+}
+
+// .tftp2.ListResponse list_response = 4;
+inline bool Mensagem::has_list_response() const {
+  return tipo_case() == kListResponse;
+}
+inline bool Mensagem::_internal_has_list_response() const {
+  return tipo_case() == kListResponse;
+}
+inline void Mensagem::set_has_list_response() {
+  _impl_._oneof_case_[0] = kListResponse;
+}
+inline void Mensagem::clear_list_response() {
+  if (tipo_case() == kListResponse) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.tipo_.list_response_;
+    }
+    clear_has_tipo();
+  }
+}
+inline ::tftp2::ListResponse* Mensagem::release_list_response() {
+  // @@protoc_insertion_point(field_release:tftp2.Mensagem.list_response)
+  if (tipo_case() == kListResponse) {
+    clear_has_tipo();
+    ::tftp2::ListResponse* temp = _impl_.tipo_.list_response_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.tipo_.list_response_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::tftp2::ListResponse& Mensagem::_internal_list_response() const {
+  return tipo_case() == kListResponse
+      ? *_impl_.tipo_.list_response_
+      : reinterpret_cast<::tftp2::ListResponse&>(::tftp2::_ListResponse_default_instance_);
+}
+inline const ::tftp2::ListResponse& Mensagem::list_response() const {
+  // @@protoc_insertion_point(field_get:tftp2.Mensagem.list_response)
+  return _internal_list_response();
+}
+inline ::tftp2::ListResponse* Mensagem::unsafe_arena_release_list_response() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:tftp2.Mensagem.list_response)
+  if (tipo_case() == kListResponse) {
+    clear_has_tipo();
+    ::tftp2::ListResponse* temp = _impl_.tipo_.list_response_;
+    _impl_.tipo_.list_response_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void Mensagem::unsafe_arena_set_allocated_list_response(::tftp2::ListResponse* list_response) {
+  clear_tipo();
+  if (list_response) {
+    set_has_list_response();
+    _impl_.tipo_.list_response_ = list_response;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tftp2.Mensagem.list_response)
+}
+inline ::tftp2::ListResponse* Mensagem::_internal_mutable_list_response() {
+  if (tipo_case() != kListResponse) {
+    clear_tipo();
+    set_has_list_response();
+    _impl_.tipo_.list_response_ = CreateMaybeMessage< ::tftp2::ListResponse >(GetArenaForAllocation());
+  }
+  return _impl_.tipo_.list_response_;
+}
+inline ::tftp2::ListResponse* Mensagem::mutable_list_response() {
+  ::tftp2::ListResponse* _msg = _internal_mutable_list_response();
+  // @@protoc_insertion_point(field_mutable:tftp2.Mensagem.list_response)
   return _msg;
 }
 
