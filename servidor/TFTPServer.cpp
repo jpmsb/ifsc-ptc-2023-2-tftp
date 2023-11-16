@@ -32,8 +32,25 @@ void TFTPServer::handle() {
                 desserializedMessage->ParseFromString(serializedMessage);
 
                 if (desserializedMessage->has_list()){
-                    cout << "Recebeu um LIST" << endl;
+                    string fullPath = rootDir + "/" + desserializedMessage->list().path();
+                    cout << "Listando o conteúdo do diretório \"" << fullPath << "\"\n";
                     cout << "Diretório: " << desserializedMessage->list().path() << endl;
+
+                    tftp2::ListResponse listResponse;
+                    int listResult = listDirectoryContents(fullPath, &listResponse);
+
+                    if (listResult == 0) {
+			tftp2::Mensagem message;
+                        message.mutable_list_response()->mutable_items()->CopyFrom(listResponse.items());
+
+                        string serializedMessage = message.SerializeAsString();
+                        sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+		    } else {
+			error = createErrorFromSysCallError(listResult);
+			cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+			sock.send(error->data(), error->size(), addr);
+		    }  
+
 
                 } else if (desserializedMessage->has_move()){
                     string oldName = desserializedMessage->move().old_name();
@@ -208,24 +225,21 @@ void TFTPServer::handle() {
         
         case Estado::Listar:
             cout << "Estado Listar" << endl;
-            struct stat sb;  // Struct para diferenciar um arquivo de um diretório
-            for (const auto& entry : filesystem::directory_iterator(rootDir)) {
-                string itemName = entry.path().string(); // Nome do arquivo ou diretório
+            // struct stat sb;  // Struct para diferenciar um arquivo de um diretório
+            // for (const auto& entry : filesystem::directory_iterator(rootDir)) {
+            //     string itemName = entry.path().string(); // Nome do arquivo ou diretório
 
-                const char* item = itemName.c_str();
-                int pos = itemName.find_last_of('/');       // Posição da última barra
-                
-                // Validando se o elemento é um arquivo ou diretório
-                if (stat(item, &sb) == 0 && (sb.st_mode & S_IFDIR)) {
-                    cout << itemName.substr(pos + 1) << "/" << endl;
-                } else {
-                    cout << itemName.substr(pos + 1) << endl;
-                }
-            }    
+            //     const char* item = itemName.c_str();
+            //     int pos = itemName.find_last_of('/');       // Posição da última barra
+            //     
+            //     // Validando se o elemento é um arquivo ou diretório
+            //     if (stat(item, &sb) == 0 && (sb.st_mode & S_IFDIR)) {
+            //         cout << itemName.substr(pos + 1) << "/" << endl;
+            //     } else {
+            //         cout << itemName.substr(pos + 1) << endl;
+            //     }
+            // }    
             break;
-
-        case Estado::Mover:
-	    break;
 
         case Estado::Fim:
             cout << "Estado Fim" << endl;
@@ -287,6 +301,33 @@ void TFTPServer::clearAll() {
 void TFTPServer::resetAll() {
     clearAll();
     estado = Estado::Espera;
+}
+
+int TFTPServer::listDirectoryContents(string path, tftp2::ListResponse * listResponse){
+    DIR *dir = opendir(path.c_str());
+    struct dirent *entry;
+    struct stat fileStat;
+
+    if (dir != 0){
+        while ((entry = readdir(dir)) != 0){
+	    string itemName(entry->d_name);
+	    string itemPath = path + "/" + itemName;
+
+            if (itemName == "." || itemName == "..") continue;
+
+            tftp2::ListItem* item = listResponse->add_items();
+
+	    if (stat(itemPath.c_str(), &fileStat) == 0 && (fileStat.st_mode & S_IFDIR)){
+		cout << itemName << "/" << endl;
+                item->mutable_directory()->set_path(itemName);
+	    } else {
+		cout << itemName << ", " << fileStat.st_size << " bytes" << endl;
+                item->mutable_file()->set_name(itemName);
+                item->mutable_file()->set_size(fileStat.st_size);
+	    }
+	}
+    } else return errno;
+    return 0; 
 }
 
 int TFTPServer::createDirectory(string path) {
