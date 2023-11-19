@@ -34,22 +34,26 @@ void TFTPServer::handle() {
                 if (desserializedMessage->has_list()){
                     string fullPath = rootDir + "/" + desserializedMessage->list().path();
                     cout << "Listando o conteúdo do diretório \"" << fullPath << "\"\n";
-                    cout << "Diretório: " << desserializedMessage->list().path() << endl;
 
                     tftp2::ListResponse listResponse;
                     int listResult = listDirectoryContents(fullPath, &listResponse);
 
                     if (listResult == 0) {
-			tftp2::Mensagem message;
+                        tftp2::Mensagem message;
                         message.mutable_list_response()->mutable_items()->CopyFrom(listResponse.items());
-
-                        string serializedMessage = message.SerializeAsString();
-                        sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
-		    } else {
-			error = createErrorFromSysCallError(listResult);
-			cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
-			sock.send(error->data(), error->size(), addr);
-		    }  
+                        
+                        estado = Estado::Transmitir;
+                        data = new DATA(message);
+                        ack = new ACK();
+                        cout << "Passando para o estado Transmitir" << endl;
+                        sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
+                        enable_timeout();
+                       
+                    } else {
+                        error = createErrorFromSysCallError(listResult);
+                        cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+                        sock.send(error->data(), error->size(), addr);
+                    }  
 
 
                 } else if (desserializedMessage->has_move()){
@@ -57,18 +61,18 @@ void TFTPServer::handle() {
                     string newName = desserializedMessage->move().new_name();
 
                     if (newName.size() > 0) cout << "Renomeando \"" << oldName << "\" para \"" << newName << "\"" << endl;
-		    else cout << "Removendo \"" << oldName << "\"" << endl;
+                    else cout << "Removendo \"" << oldName << "\"" << endl;
 
                     int moveResult = moveElement(oldName, newName);
                     if (moveResult == 0) {
-			ack = new ACK();
-			sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
+                        ack = new ACK();
+                        sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
 
-		    } else {
-			error = createErrorFromSysCallError(moveResult);
-			cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
-			sock.send(error->data(), error->size(), addr);
-		    }
+                    } else {
+                        error = createErrorFromSysCallError(moveResult);
+                        cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+                        sock.send(error->data(), error->size(), addr);
+                    }
 
                 } else if (desserializedMessage->has_mkdir()){
                     cout << "Criando diretório: " << desserializedMessage->mkdir().path() << endl;
@@ -98,7 +102,7 @@ void TFTPServer::handle() {
                         sock.send(error->data(), error->size(), addr);
 
                     // Testa se o arquivo tem permissão de leitura
-		    } else if (access(filepath.c_str(), R_OK) == -1){
+                    } else if (access(filepath.c_str(), R_OK) == -1){
                         error = new ERROR(2);
                         cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                         sock.send(error->data(), error->size(), addr);
@@ -222,24 +226,6 @@ void TFTPServer::handle() {
 	    }
             
             break;
-        
-        case Estado::Listar:
-            cout << "Estado Listar" << endl;
-            // struct stat sb;  // Struct para diferenciar um arquivo de um diretório
-            // for (const auto& entry : filesystem::directory_iterator(rootDir)) {
-            //     string itemName = entry.path().string(); // Nome do arquivo ou diretório
-
-            //     const char* item = itemName.c_str();
-            //     int pos = itemName.find_last_of('/');       // Posição da última barra
-            //     
-            //     // Validando se o elemento é um arquivo ou diretório
-            //     if (stat(item, &sb) == 0 && (sb.st_mode & S_IFDIR)) {
-            //         cout << itemName.substr(pos + 1) << "/" << endl;
-            //     } else {
-            //         cout << itemName.substr(pos + 1) << endl;
-            //     }
-            // }    
-            break;
 
         case Estado::Fim:
             cout << "Estado Fim" << endl;
@@ -318,10 +304,8 @@ int TFTPServer::listDirectoryContents(string path, tftp2::ListResponse * listRes
             tftp2::ListItem* item = listResponse->add_items();
 
 	    if (stat(itemPath.c_str(), &fileStat) == 0 && (fileStat.st_mode & S_IFDIR)){
-		cout << itemName << "/" << endl;
                 item->mutable_directory()->set_path(itemName);
 	    } else {
-		cout << itemName << ", " << fileStat.st_size << " bytes" << endl;
                 item->mutable_file()->set_name(itemName);
                 item->mutable_file()->set_size(fileStat.st_size);
 	    }
@@ -361,6 +345,7 @@ ERROR* TFTPServer::createErrorFromSysCallError(int errorNumber) {
     else if (errorNumber == EEXIST) error = new ERROR(6);
     else if (errorNumber == ENOENT) error = new ERROR(8);
     else if (errorNumber == ENOTEMPTY) error = new ERROR(9);
+    else if (errorNumber == ENOTDIR) error = new ERROR(10);
     else error = new ERROR(0);
 
     return error;
