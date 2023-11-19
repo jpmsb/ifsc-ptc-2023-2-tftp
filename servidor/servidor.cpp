@@ -16,6 +16,10 @@ int main(int argc, char * argv[]) {
     sockpp::UDPSocket sock(addr);
 
     // Cria um objeto TFTP com timeout de 3 segundos
+    cout << "Servidor iniciado: " << endl;
+    cout << "Porta: " << porta << endl;
+    cout << "Diretorio raiz: " << diretorio_raiz << endl;
+    
     TFTPServer * cb_tftp = new TFTPServer(sock, addr, 3000, diretorio_raiz);
 
     // Adiciona o objeto TFTP ao poller
