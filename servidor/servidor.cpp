@@ -7,6 +7,11 @@
 using namespace std;
 
 int main(int argc, char * argv[]) {
+    if (argc != 3) {
+        cerr << "Uso: " << argv[0] << " <porta> <diretorio_raiz>" << endl;
+        return 1;
+    }
+
     int porta = stoi(argv[1]);
     string diretorio_raiz = argv[2];
 
