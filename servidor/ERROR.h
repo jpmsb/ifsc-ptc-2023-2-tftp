@@ -22,7 +22,7 @@ class ERROR {
         void setBytes(char bytes[], size_t size); 
 
     private:
-        string tftpErrorMessages[10] = { 
+        string tftpErrorMessages[11] = { 
             "Not defined, see error message (if any).",
             "File not found.",
             "Access violation.",
@@ -32,7 +32,8 @@ class ERROR {
             "File already exists.",
             "No such user.",
             "File or parent directory does not exists.",
-            "The directory is not empty."
+            "The directory is not empty.",
+            "Destination already exists and is a directory."
         };
         uint16_t opcode;
         uint16_t errorCode;
