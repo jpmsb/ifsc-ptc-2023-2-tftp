@@ -9,6 +9,20 @@
 
 using namespace std;
 
+string bytesFormatter(double bytes) {
+    const char* units[] = {"Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
+
+    int index = 0;
+    while (bytes >= 1024.0 && index < 8) {
+        bytes /= 1024.0;
+        index++;
+    }
+
+    ostringstream stream;
+    stream << fixed << setprecision(3) << bytes;
+    return stream.str() + " " + units[index];
+}
+
 int main(int argc, char * argv[]) {
     string end_servidor = argv[1];
     int porta = stoi(argv[2]);
@@ -95,13 +109,14 @@ int main(int argc, char * argv[]) {
                         diretorios->push_back(ciano + item.directory().path() + normal);
                     } else if (item.has_file()){
                         if (arquivos == nullptr) arquivos = new unordered_map<string, string>();
-                        string nomeArq = magenta + item.file().name() + normal + ",";
-                        string tamanhoArq = amarelo + "tamanho: " + to_string(item.file().size()) + normal + " bytes";
+                        string nomeArq = magenta + item.file().name() + normal;
+                        string tamanhoArqFormatado = bytesFormatter(item.file().size());
+                        string tamanhoArqColorido = amarelo + tamanhoArqFormatado + normal;
 
-                        arquivos->insert({nomeArq, tamanhoArq});
+                        arquivos->insert({nomeArq, tamanhoArqColorido});
 
-                        if (nomeArq.size() > fileCharacterAmount) fileCharacterAmount = nomeArq.size();
-                        if (tamanhoArq.size() > sizeCharacterAmount) sizeCharacterAmount = tamanhoArq.size();
+                        if (nomeArq.size() > fileCharacterAmount) fileCharacterAmount = nomeArq.size() + 2;
+                        if (tamanhoArqColorido.size() > sizeCharacterAmount) sizeCharacterAmount = tamanhoArqColorido.size() + 2;
                     }
                 }
 
@@ -114,6 +129,7 @@ int main(int argc, char * argv[]) {
 
                 if (arquivos != nullptr){
                     cout << "\nArquivos:\n";
+                    cout << setw(fileCharacterAmount - magenta.size() - normal.size()) << left << "Nome" << setw(sizeCharacterAmount - amarelo.size() - normal.size()) << left << "Tamanho" << endl;
                     for (const auto & arq : *arquivos){
                         cout << setw(fileCharacterAmount) << left << arq.first << setw(sizeCharacterAmount) << left << arq.second << endl;
                     }
