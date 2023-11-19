@@ -43,48 +43,9 @@ void TFTP::handle() {
                 wrq = new WRQ(destFile);
                 sock.send(wrq->data(), wrq->size(), addr);
                 enable_timeout();
-
-                // Esperando a resposta do servidor e guardando
-                // a mesma em um arranjo de char chamado buffer
-                sock.recv(buffer, sizeof(buffer), addr);
-                disable_timeout();
-               
-                // Instanciação do pacote ACK
+                estado = Estado::Transmitir;
                 ack = new ACK();
-                ack->setBytes(buffer); // Salvar os bytes recebidos no objeto ack
-
-                // Verifica se o pacote recebido realmente é um ACK
-                if (ack->getOpcode() == 4) {
-                    // Instanciação do pacote DATA
-                    data = new DATA(srcFile);
-
-                    // Envia os primeiros 512 bytes do arquivo "srcFile"
-                    sock.send((char*)data, data->size(), addr);
-
-                    // Muda o estado para Transmitir
-                    estado = Estado::Transmitir;
-                    enable_timeout();
-
-                } else if (ack->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
-                   // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
-                   error = new ERROR(buffer, bytesAmount);
- 
-                   // Dado o erro, o próximo estado é o fim.
-                   estado = Estado::Fim;
-                   throw error;
-
-                   // Como não receberá mais pacotes do servidor,
-                   // para que a máquina de estados finalize, é
-                   // preciso chamar a mesma mais uma vez
-                   finish();
-                   return;
-
-                } else {                    // Se acontece qualquer outra coisa
-                   estado = Estado::Fim;    // além do esperado, vá para o estado Fim
-                   finish();
-                   return;
-                };
-
+                data = new DATA(srcFile);
 
             // Rotina inicial da operação para recebimento de arquivo
             } else if (operation == Operation::RECEIVE){
@@ -99,57 +60,8 @@ void TFTP::handle() {
                 rrq = new RRQ(srcFile);
                 sock.send(rrq->data(), rrq->size(), addr);
                 enable_timeout();
-
-                // Esperando a resposta do servidor e guardando
-                // a mesma em um arranjo de char chamado buffer
-                // bytesAmount armazena a quantidade de bytes recebidos
-                bytesAmount = sock.recv(buffer, 516, addr);
-                data = new DATA(buffer, bytesAmount); // Salvar bytes do DATA no objeto data
-
-                // Verifica se o pacote recebido realmente é um DATA
-                if (data->getOpcode() == 3){
-                   // Cria o arquivo onde os dados serão gravados.
-                   // O nome do arquivo está em destFile
-                   outputFile = new ofstream(destFile);
-
-                   // Escrever os dados recebidos no arquivo
-                   outputFile->write(data->getData(), data->dataSize());
-
-                   // Instanciação do pacote ACK
-                   ack = new ACK();
-                   ack->increment(); // Incrementar o número de bloco do ACK
-                   sock.send((char*)ack, sizeof(ACK), addr); // Mandar ACK para o servidor
-
-                   if (data->dataSize() < 512) {
-                       outputFile->close(); // O arquivo é sincronizado no armazenamento
-                       estado = Estado::Fim;  // o estado é definido para o Fim
-                       finish();
-                       return;
-                   } else {
-                       // O estado muda para Receber
-                       estado = Estado::Receber;
-                       reload_timeout();
-                   }
-
-                } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
-                   // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
-                   error = new ERROR(buffer, bytesAmount);
-
-                   // Dado o erro, o próximo estado é o fim.
-                   estado = Estado::Fim;
-                   throw error;
-
-                   // Como não receberá mais pacotes do servidor,
-                   // para que a máquina de estados finalize, é
-                   // preciso chamar a mesma mais uma vez
-                   finish();
-                   return;
-
-                } else {                    // Se acontecer qualquer outra coisa
-                   estado = Estado::Fim;    // além do esperado, vá para o estado Fim
-                   finish();
-                   return;
-                };
+                estado = Estado::Receber;
+                ack = new ACK();
                 
             } else if (operation == Operation::LIST){
                 if (timeoutState) {
@@ -166,32 +78,8 @@ void TFTP::handle() {
                 string serializedMessage = pbMessage->SerializeAsString();
                 sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
                 enable_timeout();
-
-                bytesAmount = sock.recv(buffer, sizeof(buffer), addr);
-                data = new DATA(buffer, bytesAmount);
-
-                if (data->getOpcode() == 3) {
-                    listingOutput.append(data->getData(), data->dataSize());
-                    ack = new ACK();
-                    ack->increment();
-                    sock.send((char*)ack, sizeof(ACK), addr);
-
-                    if (data->dataSize() < 512) {
-                        estado = Estado::Fim;
-                        finish();
-                        throw listingOutput;
-                    } else {
-                        estado = Estado::Receber;
-                        reload_timeout();
-                    }
-                    return;
-                } else if (data->getOpcode() == 5) {
-                    error = new ERROR(buffer, bytesAmount);
-                    estado = Estado::Fim;
-                    throw error;
-                    finish();
-                }
-
+                estado = Estado::Receber;
+                ack = new ACK();
                 return;
 
             } else if (operation == Operation::MOVE){
@@ -209,21 +97,9 @@ void TFTP::handle() {
                 
                 serializedMessage = pbMessage->SerializeAsString();
                 sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+                enable_timeout();
+                estado = Estado::Resultado;
 
-                bytesAmount = sock.recv(buffer, 516, addr);
-                ack = new ACK(buffer);
-
-                if (ack->getOpcode() == 4) {
-		    estado = Estado::Fim;
-		    finish();
-		    return;
-		} else if (ack->getOpcode() == 5) {
-		    error = new ERROR(buffer, bytesAmount);
-		    estado = Estado::Fim;
-		    throw error;
-		    finish();
-		    return;
-		}
             } else if (operation == Operation::MKDIR){
                 pbMessage = new tftp2::Mensagem();
                 tftp2::PATH* mkdirMessage = pbMessage->mutable_mkdir();
@@ -231,21 +107,8 @@ void TFTP::handle() {
                
                 string serializedMessage = pbMessage->SerializeAsString();
                 sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
-
-                bytesAmount = sock.recv(buffer, 516, addr);
-                ack = new ACK(buffer);
-
-                if (ack->getOpcode() == 4) {
-		    estado = Estado::Fim;
-		    finish();
-		    return;
-		} else if (ack->getOpcode() == 5) {
-		    error = new ERROR(buffer, bytesAmount);
-		    estado = Estado::Fim;
-		    throw error;
-		    finish();
-		    return;
-		}
+                enable_timeout();
+                estado = Estado::Resultado;
             }
             break;
 
@@ -265,7 +128,6 @@ void TFTP::handle() {
             // Verifica se o pacote recebido realmente é um ACK
             if (ack->getOpcode() == 4) {
                 // Se os dados recebidos possuírem 512 bytes, continue a transmissão
-                data->increment(); // Incrementar o número de bloco
                 if (data->dataSize() >= 512) {
                     sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
                 } else { // Último pacote
@@ -273,6 +135,7 @@ void TFTP::handle() {
                     estado = Estado::Fim; // Mudar o estado para o fim
                     return;
                 }
+                data->increment(); // Incrementar o número de bloco
 
             } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
                // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
@@ -314,6 +177,7 @@ void TFTP::handle() {
                 if (operation == Operation::LIST) {
                     listingOutput.append(data->getData(), data->dataSize());
                 } else {
+                    if (outputFile == 0) outputFile = new ofstream(destFile);
                     // Escrever os dados recebidos no arquivo
                     outputFile->write(data->getData(), data->dataSize());
                 }
@@ -352,6 +216,25 @@ void TFTP::handle() {
                estado = Estado::Fim;
                finish();
                return;
+            }
+            break;
+
+        case Estado::Resultado:
+            bytesAmount = sock.recv(buffer, 516, addr);
+            disable_timeout();
+
+            ack = new ACK(buffer);
+
+            if (ack->getOpcode() == 4) {
+                estado = Estado::Fim;
+                finish();
+                return;
+            } else if (ack->getOpcode() == 5) {
+                error = new ERROR(buffer, bytesAmount);
+                estado = Estado::Fim;
+                throw error;
+                finish();
+                return;
             }
             break;
         
