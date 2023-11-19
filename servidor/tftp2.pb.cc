@@ -47,7 +47,7 @@ PROTOBUF_CONSTEXPR FILE::FILE(
     &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
   }
 
-  , /*decltype(_impl_.size_)*/ 0
+  , /*decltype(_impl_.size_)*/ ::int64_t{0}
 } {}
 struct FILEDefaultTypeInternal {
   PROTOBUF_CONSTEXPR FILEDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -226,7 +226,7 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_tftp2_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\013tftp2.proto\022\005tftp2\"\024\n\004PATH\022\014\n\004path\030\001 \002"
-    "(\t\"\"\n\004FILE\022\014\n\004name\030\001 \002(\t\022\014\n\004size\030\002 \002(\005\"*"
+    "(\t\"\"\n\004FILE\022\014\n\004name\030\001 \002(\t\022\014\n\004size\030\002 \002(\003\"*"
     "\n\004MOVE\022\020\n\010old_name\030\001 \002(\t\022\020\n\010new_name\030\002 \002"
     "(\t\".\n\014ListResponse\022\036\n\005items\030\001 \003(\0132\017.tftp"
     "2.ListItem\"S\n\010ListItem\022\033\n\004file\030\001 \001(\0132\013.t"
@@ -544,7 +544,7 @@ inline void FILE::SharedCtor(::_pb::Arena* arena) {
     , /*decltype(_impl_._cached_size_)*/{}
     , decltype(_impl_.name_) {}
 
-    , decltype(_impl_.size_) { 0 }
+    , decltype(_impl_.size_) { ::int64_t{0} }
 
   };
   _impl_.name_.InitDefault();
@@ -581,7 +581,7 @@ void FILE::Clear() {
   if (cached_has_bits & 0x00000001u) {
     _impl_.name_.ClearNonDefaultToEmpty();
   }
-  _impl_.size_ = 0;
+  _impl_.size_ = ::int64_t{0};
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -606,11 +606,11 @@ const char* FILE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
           goto handle_unusual;
         }
         continue;
-      // required int32 size = 2;
+      // required int64 size = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
           _Internal::set_has_size(&has_bits);
-          _impl_.size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else {
           goto handle_unusual;
@@ -655,10 +655,10 @@ failure:
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
-  // required int32 size = 2;
+  // required int64 size = 2;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(
         2, this->_internal_size(), target);
   }
 
@@ -681,8 +681,8 @@ failure:
   }
 
   if ((_impl_._has_bits_[0] & 0x00000002u) != 0) {
-    // required int32 size = 2;
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+    // required int64 size = 2;
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
         this->_internal_size());
   }
 
@@ -697,8 +697,8 @@ failure:
     total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
                                     this->_internal_name());
 
-    // required int32 size = 2;
-    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+    // required int64 size = 2;
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
         this->_internal_size());
 
   } else {

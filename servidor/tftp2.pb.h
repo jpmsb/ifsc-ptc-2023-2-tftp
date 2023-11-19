@@ -411,15 +411,15 @@ class FILE final :
   std::string* _internal_mutable_name();
 
   public:
-  // required int32 size = 2;
+  // required int64 size = 2;
   bool has_size() const;
   void clear_size() ;
-  ::int32_t size() const;
-  void set_size(::int32_t value);
+  ::int64_t size() const;
+  void set_size(::int64_t value);
 
   private:
-  ::int32_t _internal_size() const;
-  void _internal_set_size(::int32_t value);
+  ::int64_t _internal_size() const;
+  void _internal_set_size(::int64_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:tftp2.FILE)
@@ -436,7 +436,7 @@ class FILE final :
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-    ::int32_t size_;
+    ::int64_t size_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_tftp2_2eproto;
@@ -1398,27 +1398,27 @@ inline void FILE::set_allocated_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:tftp2.FILE.name)
 }
 
-// required int32 size = 2;
+// required int64 size = 2;
 inline bool FILE::has_size() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline void FILE::clear_size() {
-  _impl_.size_ = 0;
+  _impl_.size_ = ::int64_t{0};
   _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline ::int32_t FILE::size() const {
+inline ::int64_t FILE::size() const {
   // @@protoc_insertion_point(field_get:tftp2.FILE.size)
   return _internal_size();
 }
-inline void FILE::set_size(::int32_t value) {
+inline void FILE::set_size(::int64_t value) {
   _internal_set_size(value);
   // @@protoc_insertion_point(field_set:tftp2.FILE.size)
 }
-inline ::int32_t FILE::_internal_size() const {
+inline ::int64_t FILE::_internal_size() const {
   return _impl_.size_;
 }
-inline void FILE::_internal_set_size(::int32_t value) {
+inline void FILE::_internal_set_size(::int64_t value) {
   _impl_._has_bits_[0] |= 0x00000002u;
   _impl_.size_ = value;
 }

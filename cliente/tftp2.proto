@@ -8,7 +8,7 @@ message PATH {
 
 message FILE{
     required string name = 1;
-    required int32 size = 2;
+    required int64 size = 2;
 }
 
 message MOVE {
