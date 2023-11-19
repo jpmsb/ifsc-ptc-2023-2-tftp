@@ -34,6 +34,7 @@ class TFTP: public Callback {
       Conexao,
       Transmitir,
       Receber,
+      Resultado,
       Fim
   };
   Estado estado;
