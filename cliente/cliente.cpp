@@ -24,6 +24,17 @@ string bytesFormatter(double bytes) {
 }
 
 int main(int argc, char * argv[]) {
+    if (argc < 4){
+        cout << "Uso: " << argv[0] << " <endereço do servidor> <porta> <operação> [arquivo origem] [arquivo destino]\n\n";
+        cout << "Operações disponíveis:" << endl;
+        cout << "                       enviar" << endl;
+        cout << "                       receber" << endl;
+        cout << "                       listar (ls)" << endl;
+        cout << "                       mover (mv)" << endl;
+        cout << "                       criardir (mkdir)" << endl;
+        return 1;
+    }
+
     string end_servidor = argv[1];
     int porta = stoi(argv[2]);
     string operacao = argv[3];
@@ -52,7 +63,7 @@ int main(int argc, char * argv[]) {
 
     // Seleciona a operação com base na entrada do usuário
     if (operacao == "listar" || operacao == "ls"){
-        cout << "Listando o conteúdo do diretório \"" << arq_origem << "\"\n";
+        cout << "Listando o conteúdo do diretório \"" << arq_origem << "\"" << endl;
         operation = TFTP::LIST;
     } else if (arq_origem != "." && arq_destino != "." && arq_origem != ".." && arq_destino != ".." && arq_origem != ""){
         if (operacao == "enviar"){
@@ -121,14 +132,14 @@ int main(int argc, char * argv[]) {
                 }
 
                 if (diretorios != nullptr){
-                    cout << "\nDiretórios:\n";
+                    cout << "\nDiretórios:" << endl;
                     for (const auto & dir : *diretorios){
                         cout << dir << "/" << endl;
                     }
                 }
 
                 if (arquivos != nullptr){
-                    cout << "\nArquivos:\n";
+                    cout << "\nArquivos:" << endl;
                     cout << setw(fileCharacterAmount - magenta.size() - normal.size()) << left << "Nome" << setw(sizeCharacterAmount - amarelo.size() - normal.size()) << left << "Tamanho" << endl;
                     for (const auto & arq : *arquivos){
                         cout << setw(fileCharacterAmount) << left << arq.first << setw(sizeCharacterAmount) << left << arq.second << endl;
