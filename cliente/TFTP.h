@@ -54,4 +54,5 @@ class TFTP: public Callback {
   bool timeoutState;
   tftp2::Mensagem * pbMessage;
   string serializedMessage;
+  string listingOutput;
 };
