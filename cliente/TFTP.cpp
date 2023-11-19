@@ -121,16 +121,16 @@ void TFTP::handle() {
                    sock.send((char*)ack, sizeof(ACK), addr); // Mandar ACK para o servidor
 
                    if (data->dataSize() < 512) {
-		       outputFile->close(); // O arquivo é sincronizado no armazenamento
-		       estado = Estado::Fim;  // o estado é definido para o Fim
+                       outputFile->close(); // O arquivo é sincronizado no armazenamento
+                       estado = Estado::Fim;  // o estado é definido para o Fim
                        finish();
-		       return;
-		   } else {
+                       return;
+                   } else {
                        // O estado muda para Receber
                        estado = Estado::Receber;
                        reload_timeout();
                    }
-                   
+
                 } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
                    // Instanciação do pacote ERROR, já atribuindo os bystes recebidos anteriormente
                    error = new ERROR(buffer, bytesAmount);
@@ -152,7 +152,6 @@ void TFTP::handle() {
                 };
                 
             } else if (operation == Operation::LIST){
-                cout << "Envia LIST" << endl;
                 if (timeoutState) {
 		    timeoutState = false;
                     sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
@@ -163,29 +162,36 @@ void TFTP::handle() {
                 pbMessage = new tftp2::Mensagem();
                 tftp2::PATH* listMessage = pbMessage->mutable_list();
                 listMessage->set_path(srcFile);
-               
+ 
                 string serializedMessage = pbMessage->SerializeAsString();
                 sock.send(serializedMessage.c_str(), serializedMessage.size(), addr);
+                enable_timeout();
 
-                bytesAmount = sock.recv(buffer, 516, addr);
-                serializedMessage = string(buffer, bytesAmount);
+                bytesAmount = sock.recv(buffer, sizeof(buffer), addr);
+                data = new DATA(buffer, bytesAmount);
 
-                pbMessage->ParseFromString(serializedMessage);
+                if (data->getOpcode() == 3) {
+                    listingOutput.append(data->getData(), data->dataSize());
+                    ack = new ACK();
+                    ack->increment();
+                    sock.send((char*)ack, sizeof(ACK), addr);
 
-                // Verificar o tipo da mensagem recebida
-                if (pbMessage->has_list_response()) {
-                    // Iterar sobre os itens na resposta recebida
-                    for (const tftp2::ListItem& item : pbMessage->list_response().items()) {
-                        if (item.has_file()) {
-                            std::cout << "Arquivo Recebido: " << item.file().name() << ", Tamanho: " << item.file().size() << " bytes\n";
-                        } else if (item.has_directory()) {
-                            std::cout << "Diretório Recebido: " << item.directory().path() << "\n";
-                        }
+                    if (data->dataSize() < 512) {
+                        estado = Estado::Fim;
+                        finish();
+                        throw listingOutput;
+                    } else {
+                        estado = Estado::Receber;
+                        reload_timeout();
                     }
-                } else {
-                    std::cout << "Mensagem recebida não é do tipo ListResponse.\n";
+                    return;
+                } else if (data->getOpcode() == 5) {
+                    error = new ERROR(buffer, bytesAmount);
+                    estado = Estado::Fim;
+                    throw error;
+                    finish();
                 }
-                finish();
+
                 return;
 
             } else if (operation == Operation::MOVE){
@@ -302,11 +308,15 @@ void TFTP::handle() {
             // // bytesAmount armazena a quantidade de bytes recebidos
             bytesAmount = sock.recv(buffer, 516, addr);
             data = new DATA(buffer, bytesAmount); // Salvar bytes do DATA no objeto data
- 
+
             // Verifica se o pacote recebido realmente é um DATA
-            if (data->getOpcode() == 3){ 
-               // Escrever os dados recebidos no arquivo
-               outputFile->write(data->getData(), data->dataSize());
+            if (data->getOpcode() == 3){
+                if (operation == Operation::LIST) {
+                    listingOutput.append(data->getData(), data->dataSize());
+                } else {
+                    // Escrever os dados recebidos no arquivo
+                    outputFile->write(data->getData(), data->dataSize());
+                }
 
                // Mandar um ACK para o servidor
                ack->increment(); // Incrementar o número de bloco do ack
@@ -315,10 +325,17 @@ void TFTP::handle() {
                // Se o trecho do arquivo recebido for menor do que 512 bytes
                // o estado é definido para o Fim
                if (data->dataSize() < 512) {
-                   outputFile->close(); // O arquivo é sincronizado no armazenamento
-                   estado = Estado::Fim;  // o estado é definido para o Fim
-                   finish();
-                   return;
+                   if (operation == Operation::LIST) {
+                       estado = Estado::Fim;
+                       finish();
+                       throw listingOutput;
+                       return;
+                   } else {
+                       outputFile->close(); // O arquivo é sincronizado no armazenamento
+                       estado = Estado::Fim;  // o estado é definido para o Fim
+                       finish();
+                       return;
+                   }
                }
   
             } else if (data->getOpcode() == 5) { // Verifica se recebeu um pacote de erro
