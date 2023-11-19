@@ -34,7 +34,6 @@ class TFTPServer: public Callback {
       Espera,
       Transmitir,
       Receber,
-      Listar,
       Fim
   };
   Estado estado;
