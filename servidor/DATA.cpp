@@ -1,20 +1,25 @@
 #include "DATA.h"
 
-using namespace std;
-
 DATA::DATA()
   : opcode(htons(3)), block(0), count(0), bytesAmount(0)
 {
     
 }
 
-DATA::DATA(const string & filename)
-  : opcode(htons(3)), block(htons(1)), bytesAmount(0), file(filename, ios::binary)
+DATA::DATA(tftp2::Mensagem & pbMessage)
+  : opcode(htons(3)), block(htons(1)), count(1), bytesAmount(0), isFile(false) {
+
+   serializedMessage = pbMessage.SerializeAsString();
+   std::string dataString = serializedMessage.substr(0, 512);
+   memcpy(data, dataString.c_str(), 512);
+   bytesAmount = dataString.size();
+}
+
+DATA::DATA(const std::string & filename)
+  : opcode(htons(3)), block(htons(1)), count(1), bytesAmount(0), isFile(true), file(filename, std::ios::binary)
 {
     file.read((char *)data, 512);
     bytesAmount = file.gcount();
-    count = ntohs(block);
-    
 }
 
 DATA::DATA(char bytes[], size_t size){
@@ -30,9 +35,16 @@ DATA::DATA(char bytes[], size_t size){
 void DATA::increment(){
     count = ntohs(block)+1;
     block = htons(count);
+    memset(data, 0, 512);
 
-    file.read((char *)data, 512);
-    bytesAmount = file.gcount();
+    if(isFile){
+	file.read((char *)data, 512);
+	bytesAmount = file.gcount();
+    } else {
+        std::string dataString = serializedMessage.substr(512*(count-1), 512);
+        memcpy(data, dataString.c_str(), 512);
+        bytesAmount = dataString.size();
+    }
 }
 
 uint16_t DATA::getBlock(){
