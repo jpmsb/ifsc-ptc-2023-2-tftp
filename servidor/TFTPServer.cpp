@@ -18,7 +18,6 @@ void TFTPServer::handle() {
     uint16_t ackBlock = 0;
     switch (estado) {
         case Estado::Espera:
-            cout << "Estado Espere" << endl;
             clearAll();
             disable_timeout();
 
@@ -45,7 +44,6 @@ void TFTPServer::handle() {
                         estado = Estado::Transmitir;
                         data = new DATA(message);
                         ack = new ACK();
-                        cout << "Passando para o estado Transmitir" << endl;
                         sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
                         enable_timeout();
                        
@@ -110,7 +108,6 @@ void TFTPServer::handle() {
                         estado = Estado::Transmitir;
                         data = new DATA(filepath);
                         ack = new ACK();
-                        cout << "Passando para o estado Transmitir" << endl;
                         sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
                         enable_timeout();
                     }
@@ -135,7 +132,6 @@ void TFTPServer::handle() {
                     }
 
                 } else if (request->getOpcode() > 2 && request->getOpcode() < 6){
-                    cout << "Recebeu opcode " << request->getOpcode() << endl;
                     error = new ERROR(4);
                     cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
                     sock.send(error->data(), error->size(), addr);
@@ -147,14 +143,15 @@ void TFTPServer::handle() {
                     
                 }
 	    } else {
-		cout << "Erro ao receber pacote" << endl;
+                // Caso receba um pacote nulo
+                error = new ERROR(0);
+                cout << "Erro " << error->getErrorCode() << ": " << error->getErrorMessage() << endl;
+                sock.send(error->data(), error->size(), addr);
 	    }
             return;
             break;
 
         case Estado::Transmitir:
-            cout << "Estado Transmitir" << endl;
-
             if (timeoutState) {
 		cout << "Reenviando pacote DATA..." << endl;
                 sock.send((char*)data, data->size(), addr); // Enviar o pacote DATA
@@ -190,8 +187,6 @@ void TFTPServer::handle() {
             break;
         
         case Estado::Receber:
-            cout << "Estado Receber" << endl;
-
             if (timeoutState) {
 	        cout << "Reenviando pacote ACK..." << endl;
                 sock.send((char*)ack, sizeof(ACK), addr); // Enviar o pacote ACK para o cliente
@@ -228,7 +223,6 @@ void TFTPServer::handle() {
             break;
 
         case Estado::Fim:
-            cout << "Estado Fim" << endl;
             estado = Estado::Espera;
             return;
             break;
