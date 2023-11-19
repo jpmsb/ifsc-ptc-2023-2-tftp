@@ -1,46 +1,154 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/Vc7tL63f)
-# Protocolo TFTP
+# Protocolo TFTP (versão 2)
 
-## Máquina de estados do cliente TFTP
+## Cliente
+### Máquina de estados
 
-![Máquina de estados finita comunicante do cliente TFTP](imagens/maquinas-de-estado/cliente.jpg)
+![Máquina de estados finita comunicante do cliente TFTP](imagens/maquinas-de-estado/cliente.png)
 
-## Compilação
+### Compilação
 
 O cliente TFTP pode ser compilado utilizando o comando abaixo:
 
 ```
-g++ BaseSocket.cpp UDPSocket.cpp Callback.cpp poller.cpp ACK.cpp DATA.cpp RRQ.cpp WRQ.cpp ERROR.cpp TFTP.cpp cliente.cpp -o cliente
+git clone https://github.com/ifsc-arliones/ifsc-ptc-2023-2-tftp-joao/
+cd ifsc-ptc-2023-2-tftp-joao/cliente
+make
 ```
 
-## Uso
+Isso produzirá um binário chamado `cliente` que pode ser executado.
+
+### Uso
 
 O uso dá-se da seguinte forma:
 
 ```
-cliente ip_do_servidor porta operação arquivo_de_origem arquivo_de_destino
+cliente <endereço do servidor> <porta> <operação> [arquivo origem] [arquivo destino]
 ```
 
-Por exemplo:
+A instrução de uso acima também pode ser obtida executando o comando sem nenhum argumento:
+
+```
+./cliente
+
+Uso: ./cliente <endereço do servidor> <porta> <operação> [arquivo origem] [arquivo destino]
+
+Operações disponíveis:
+                       enviar
+                       receber
+                       listar (ls)
+                       mover (mv)
+                       criardir (mkdir)
+```
+
+#### Exemplos
 
  - Recebendo o arquivo "arquivo-a" do servidor e salvando como "arquivo-b" localmente:
 
-```
-cliente 127.0.0.1 6969 receber arquivo-a arquivo-b
-```
+    ```
+    cliente 127.0.0.1 6969 receber arquivo-a arquivo-b
+    ```
 
  - Enviando o arquivo "arquivo-a" e salvando como "arquivo-b" no servidor
 
+    ```
+    cliente 127.0.0.1 6969 enviar arquivo-a arquivo-b
+    ```
+
+- Criando um diretório
+
+    ```
+    cliente 127.0.0.1 6969 criardir diretorio
+    ```
+
+    ou
+
+    ```
+    cliente 127.0.0.1 6969 mkdir diretorio
+    ```
+
+- Listando os arquivos do diretório raiz
+
+    ```
+    cliente 127.0.0.1 6969 listar
+    ```
+    ou
+
+    ```
+    cliente 127.0.0.1 6969 ls
+    ```
+
+- Listando os arquivos de um subdiretório
+
+    ```
+    cliente 127.0.0.1 6969 listar subdiretorio
+    ```
+    ou
+
+    ```
+    cliente 127.0.0.1 6969 ls subdiretorio
+    ```
+
+- Renomeando um arquivo
+
+    ```
+    cliente 127.0.0.1 6969 mover arquivo-a arquivo-b
+    ```
+    ou
+
+    ```
+    cliente 127.0.0.1 6969 mv arquivo-a arquivo-b
+    ```
+
+- Removendo um arquivo
+
+    ```
+    cliente 127.0.0.1 6969 mover arquivo-a
+    ```
+    ou
+
+    ```
+    cliente 127.0.0.1 6969 mv arquivo-a
+    ```
+
+## Servidor
+
+### Máquina de estados
+
+![Máquina de estados finita comunicante do servidor TFTP](imagens/maquinas-de-estado/servidor.png)
+
+### Compilação
+
+O servidor TFTP pode ser compilado utilizando o comando abaixo:
+
 ```
-cliente 127.0.0.1 6969 enviar arquivo-a arquivo-b
+git clone https://github.com/ifsc-arliones/ifsc-ptc-2023-2-tftp-joao/
+cd ifsc-ptc-2023-2-tftp-joao/servidor
+make
 ```
 
-## Bug
+Isso produzirá um binário chamado `servidor` que pode ser executado.
 
-Ao final da execução do programa ocorre o erro:
+### Uso
+
+O uso dá-se da seguinte forma:
 
 ```
-free(): invalid size
+servidor <porta> [diretório raiz]
 ```
 
-Isso não impacta no resultado gerado pela aplicação em si, porém a mesma não termina de forma adequada. Um contorno para essa situação foi utilizar a função ```exit(1)``` para terminar o programa em caso de erro.
+A instrução de uso acima também pode ser obtida executando o comando sem nenhum argumento:
+
+```
+./servidor
+
+Uso: ./servidor <porta> <diretório raiz>
+```
+
+#### Exemplos
+
+ - Iniciando o servidor na porta 6969 com o diretório raiz sendo o diretório "diretorio":
+
+    ```
+    servidor 6969 diretorio
+    ```
