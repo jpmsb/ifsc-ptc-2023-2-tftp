@@ -29,12 +29,11 @@ Tais mensagens foram implementadas utilizando o protocolo ProtoBuffers, que é u
 
 ## Estados
 
-Há quatro estados possíveis para o servidor:
+Há três estados possíveis para o servidor:
 
  - Espera
  - Transmitir
  - Receber
- - Fim
 
 ### Espera
 
