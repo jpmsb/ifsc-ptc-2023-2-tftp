@@ -11,8 +11,8 @@
 O cliente TFTP pode ser compilado utilizando o comando abaixo:
 
 ```
-git clone https://github.com/ifsc-arliones/ifsc-ptc-2023-2-tftp-joao/
-cd ifsc-ptc-2023-2-tftp-joao/cliente
+git clone https://github.com/jpmsb/ifsc-ptc-2023-2-tftp
+cd ifsc-ptc-2023-2-tftp/cliente
 make
 ```
 
@@ -122,8 +122,8 @@ Operações disponíveis:
 O servidor TFTP pode ser compilado utilizando o comando abaixo:
 
 ```
-git clone https://github.com/ifsc-arliones/ifsc-ptc-2023-2-tftp-joao/
-cd ifsc-ptc-2023-2-tftp-joao/servidor
+git clone https://github.com/jpmsb/ifsc-ptc-2023-2-tftp
+cd ifsc-ptc-2023-2-tftp/servidor
 make
 ```
 
