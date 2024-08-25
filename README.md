@@ -1,5 +1,15 @@
 # Protocolo TFTP (versão 2)
 
+## Pré-requisitos
+
+Para compilar o cliente e o servidor é necessário ter instalado o compilador de C++ e a biblioteca Protocol Buffers. Para instalar esses componentes, execute o comando abaixo:
+
+- openSUSE Tumbleweed
+
+    ```
+    sudo zypper install gcc-c++ protobuf-devel
+    ```
+
 ## Cliente
 ### Máquina de estados
 
@@ -12,18 +22,11 @@ O cliente TFTP pode ser compilado utilizando o comando abaixo:
 ```
 git clone https://github.com/jpmsb/ifsc-ptc-2023-2-tftp
 cd ifsc-ptc-2023-2-tftp/cliente
+protoc -I . --cpp_out=. tftp2.proto
 make
 ```
 
 Isso produzirá um binário chamado `cliente` que pode ser executado.
-
-Caso ocorra erro relacionado a versão do Protocol Buffers ser mais antiga do que a instalada no sistema, execute o comando abaixo:
-
-```
-protoc -I . --cpp_out=. tftp2.proto
-```
-
-Depois, execute o comando `make` novamente.
 
 ### Uso
 
@@ -131,18 +134,11 @@ O servidor TFTP pode ser compilado utilizando o comando abaixo:
 ```
 git clone https://github.com/jpmsb/ifsc-ptc-2023-2-tftp
 cd ifsc-ptc-2023-2-tftp/servidor
+protoc -I . --cpp_out=. tftp2.proto
 make
 ```
 
 Isso produzirá um binário chamado `servidor` que pode ser executado.
-
-Caso ocorra erro relacionado a versão do Protocol Buffers ser mais antiga do que a instalada no sistema, execute o comando abaixo:
-
-```
-protoc -I . --cpp_out=. tftp2.proto
-```
-
-Depois, execute o comando `make` novamente.
 
 ### Uso
 
