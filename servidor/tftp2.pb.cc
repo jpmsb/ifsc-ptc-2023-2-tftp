@@ -11,23 +11,27 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
 #include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
 namespace tftp2 {
+
+inline constexpr PATH::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        path_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
 template <typename>
-PROTOBUF_CONSTEXPR PATH::PATH(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.path_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-} {}
+PROTOBUF_CONSTEXPR PATH::PATH(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct PATHDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PATHDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~PATHDefaultTypeInternal() {}
@@ -38,40 +42,20 @@ struct PATHDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PATHDefaultTypeInternal _PATH_default_instance_;
+
+inline constexpr MOVE::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        old_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        new_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()) {}
+
 template <typename>
-PROTOBUF_CONSTEXPR FILE::FILE(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.name_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-
-  , /*decltype(_impl_.size_)*/ ::int64_t{0}
-} {}
-struct FILEDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR FILEDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~FILEDefaultTypeInternal() {}
-  union {
-    FILE _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FILEDefaultTypeInternal _FILE_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR MOVE::MOVE(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.old_name_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-
-  , /*decltype(_impl_.new_name_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-} {}
+PROTOBUF_CONSTEXPR MOVE::MOVE(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct MOVEDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MOVEDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~MOVEDefaultTypeInternal() {}
@@ -82,27 +66,38 @@ struct MOVEDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MOVEDefaultTypeInternal _MOVE_default_instance_;
+
+inline constexpr FILE::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        size_{::int64_t{0}} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR ListResponse::ListResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.items_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct ListResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ListResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ListResponseDefaultTypeInternal() {}
+PROTOBUF_CONSTEXPR FILE::FILE(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct FILEDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FILEDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FILEDefaultTypeInternal() {}
   union {
-    ListResponse _instance;
+    FILE _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListResponseDefaultTypeInternal _ListResponse_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FILEDefaultTypeInternal _FILE_default_instance_;
+
+inline constexpr ListItem::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : answer_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR ListItem::ListItem(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.answer_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_._oneof_case_)*/{}} {}
+PROTOBUF_CONSTEXPR ListItem::ListItem(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct ListItemDefaultTypeInternal {
   PROTOBUF_CONSTEXPR ListItemDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ListItemDefaultTypeInternal() {}
@@ -113,12 +108,35 @@ struct ListItemDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListItemDefaultTypeInternal _ListItem_default_instance_;
+
+inline constexpr ListResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : items_{},
+        _cached_size_{0} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR Mensagem::Mensagem(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.tipo_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_._oneof_case_)*/{}} {}
+PROTOBUF_CONSTEXPR ListResponse::ListResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ListResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ListResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ListResponseDefaultTypeInternal() {}
+  union {
+    ListResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListResponseDefaultTypeInternal _ListResponse_default_instance_;
+
+inline constexpr Mensagem::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : tipo_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Mensagem::Mensagem(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct MensagemDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MensagemDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~MensagemDefaultTypeInternal() {}
@@ -208,12 +226,12 @@ const ::uint32_t TableStruct_tftp2_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
 
 static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-        { 0, 9, -1, sizeof(::tftp2::PATH)},
-        { 10, 20, -1, sizeof(::tftp2::FILE)},
-        { 22, 32, -1, sizeof(::tftp2::MOVE)},
-        { 34, -1, -1, sizeof(::tftp2::ListResponse)},
-        { 43, -1, -1, sizeof(::tftp2::ListItem)},
-        { 54, -1, -1, sizeof(::tftp2::Mensagem)},
+        {0, 9, -1, sizeof(::tftp2::PATH)},
+        {10, 20, -1, sizeof(::tftp2::FILE)},
+        {22, 32, -1, sizeof(::tftp2::MOVE)},
+        {34, -1, -1, sizeof(::tftp2::ListResponse)},
+        {43, -1, -1, sizeof(::tftp2::ListItem)},
+        {54, -1, -1, sizeof(::tftp2::Mensagem)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -289,65 +307,53 @@ class PATH::_Internal {
   }
 };
 
-PATH::PATH(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PATH::PATH(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:tftp2.PATH)
 }
-PATH::PATH(const PATH& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PATH* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.path_) {}
-  };
+inline PROTOBUF_NDEBUG_INLINE PATH::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        path_(arena, from.path_) {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.path_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.path_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.path_.Set(from._internal_path(), _this->GetArenaForAllocation());
-  }
+PATH::PATH(
+    ::google::protobuf::Arena* arena,
+    const PATH& from)
+    : ::google::protobuf::Message(arena) {
+  PATH* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
   // @@protoc_insertion_point(copy_constructor:tftp2.PATH)
 }
+inline PROTOBUF_NDEBUG_INLINE PATH::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0},
+        path_(arena) {}
 
 inline void PATH::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.path_) {}
-
-  };
-  _impl_.path_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.path_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 PATH::~PATH() {
   // @@protoc_insertion_point(destructor:tftp2.PATH)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PATH::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.path_.Destroy();
+  _impl_.~Impl_();
 }
 
-void PATH::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PATH::Clear() {
+PROTOBUF_NOINLINE void PATH::Clear() {
 // @@protoc_insertion_point(message_clear_start:tftp2.PATH)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -357,71 +363,69 @@ void PATH::Clear() {
     _impl_.path_.ClearNonDefaultToEmpty();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PATH::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // required string path = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_path();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "tftp2.PATH.path");
-          #endif  // !NDEBUG
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PATH::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 23, 2> PATH::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PATH, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_PATH_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // required string path = 1;
+    {::_pbi::TcParser::FastSS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PATH, _impl_.path_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // required string path = 1;
+    {PROTOBUF_FIELD_OFFSET(PATH, _impl_.path_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kRawString | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\12\4\0\0\0\0\0\0"
+    "tftp2.PATH"
+    "path"
+  }},
+};
 
 ::uint8_t* PATH::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:tftp2.PATH)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // required string path = 1;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_path();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormat::SERIALIZE,
                                 "tftp2.PATH.path");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tftp2.PATH)
   return target;
@@ -431,26 +435,29 @@ failure:
 // @@protoc_insertion_point(message_byte_size_start:tftp2.PATH)
   ::size_t total_size = 0;
 
-  // required string path = 1;
-  if ((_impl_._has_bits_[0] & 0x00000001u) != 0) {
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-                                    this->_internal_path());
-  }
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // required string path = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_path());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PATH::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PATH::MergeImpl
+const ::google::protobuf::Message::ClassData PATH::_class_data_ = {
+    PATH::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PATH::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PATH::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PATH::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PATH::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PATH*>(&to_msg);
   auto& from = static_cast<const PATH&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:tftp2.PATH)
@@ -461,7 +468,7 @@ void PATH::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
   if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
     _this->_internal_set_path(from._internal_path());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PATH::CopyFrom(const PATH& from) {
@@ -471,22 +478,26 @@ void PATH::CopyFrom(const PATH& from) {
   MergeFrom(from);
 }
 
-bool PATH::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) return false;
+PROTOBUF_NOINLINE bool PATH::IsInitialized() const {
+  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) {
+    return false;
+  }
   return true;
 }
 
-void PATH::InternalSwap(PATH* other) {
+::_pbi::CachedSize* PATH::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PATH::InternalSwap(PATH* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.path_, lhs_arena,
-                                       &other->_impl_.path_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.path_, &other->_impl_.path_, arena);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PATH::GetMetadata() const {
+::google::protobuf::Metadata PATH::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_tftp2_2eproto_getter, &descriptor_table_tftp2_2eproto_once,
       file_level_metadata_tftp2_2eproto[0]);
@@ -509,70 +520,55 @@ class FILE::_Internal {
   }
 };
 
-FILE::FILE(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+FILE::FILE(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:tftp2.FILE)
 }
-FILE::FILE(const FILE& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  FILE* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.name_) {}
+inline PROTOBUF_NDEBUG_INLINE FILE::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        name_(arena, from.name_) {}
 
-    , decltype(_impl_.size_) {}
-  };
+FILE::FILE(
+    ::google::protobuf::Arena* arena,
+    const FILE& from)
+    : ::google::protobuf::Message(arena) {
+  FILE* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.size_ = from._impl_.size_;
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.name_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.name_.Set(from._internal_name(), _this->GetArenaForAllocation());
-  }
-  _this->_impl_.size_ = from._impl_.size_;
   // @@protoc_insertion_point(copy_constructor:tftp2.FILE)
 }
+inline PROTOBUF_NDEBUG_INLINE FILE::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0},
+        name_(arena) {}
 
 inline void FILE::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.name_) {}
-
-    , decltype(_impl_.size_) { ::int64_t{0} }
-
-  };
-  _impl_.name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.name_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.size_ = {};
 }
-
 FILE::~FILE() {
   // @@protoc_insertion_point(destructor:tftp2.FILE)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void FILE::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.name_.Destroy();
+  _impl_.~Impl_();
 }
 
-void FILE::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void FILE::Clear() {
+PROTOBUF_NOINLINE void FILE::Clear() {
 // @@protoc_insertion_point(message_clear_start:tftp2.FILE)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -583,142 +579,122 @@ void FILE::Clear() {
   }
   _impl_.size_ = ::int64_t{0};
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* FILE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // required string name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "tftp2.FILE.name");
-          #endif  // !NDEBUG
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // required int64 size = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          _Internal::set_has_size(&has_bits);
-          _impl_.size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* FILE::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 23, 2> FILE::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(FILE, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_FILE_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // required int64 size = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(FILE, _impl_.size_), 1>(),
+     {16, 1, 0, PROTOBUF_FIELD_OFFSET(FILE, _impl_.size_)}},
+    // required string name = 1;
+    {::_pbi::TcParser::FastSS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(FILE, _impl_.name_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // required string name = 1;
+    {PROTOBUF_FIELD_OFFSET(FILE, _impl_.name_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kRawString | ::_fl::kRepAString)},
+    // required int64 size = 2;
+    {PROTOBUF_FIELD_OFFSET(FILE, _impl_.size_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+    "\12\4\0\0\0\0\0\0"
+    "tftp2.FILE"
+    "name"
+  }},
+};
 
 ::uint8_t* FILE::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:tftp2.FILE)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // required string name = 1;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_name();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormat::SERIALIZE,
                                 "tftp2.FILE.name");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // required int64 size = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(
-        2, this->_internal_size(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt64ToArrayWithField<2>(
+            stream, this->_internal_size(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tftp2.FILE)
   return target;
 }
 
-::size_t FILE::RequiredFieldsByteSizeFallback() const {
-// @@protoc_insertion_point(required_fields_byte_size_fallback_start:tftp2.FILE)
-  ::size_t total_size = 0;
-
-  if ((_impl_._has_bits_[0] & 0x00000001u) != 0) {
-    // required string name = 1;
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-                                    this->_internal_name());
-  }
-
-  if ((_impl_._has_bits_[0] & 0x00000002u) != 0) {
-    // required int64 size = 2;
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
-        this->_internal_size());
-  }
-
-  return total_size;
-}
 ::size_t FILE::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:tftp2.FILE)
   ::size_t total_size = 0;
 
-  if (((_impl_._has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
-    // required string name = 1;
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-                                    this->_internal_name());
-
-    // required int64 size = 2;
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
-        this->_internal_size());
-
-  } else {
-    total_size += RequiredFieldsByteSizeFallback();
-  }
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    // required string name = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this->_internal_name());
+    }
+
+    // required int64 size = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+          this->_internal_size());
+    }
+
+  }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FILE::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    FILE::MergeImpl
+const ::google::protobuf::Message::ClassData FILE::_class_data_ = {
+    FILE::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FILE::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* FILE::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void FILE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void FILE::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<FILE*>(&to_msg);
   auto& from = static_cast<const FILE&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:tftp2.FILE)
@@ -736,7 +712,7 @@ void FILE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
     }
     _this->_impl_._has_bits_[0] |= cached_has_bits;
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void FILE::CopyFrom(const FILE& from) {
@@ -746,24 +722,27 @@ void FILE::CopyFrom(const FILE& from) {
   MergeFrom(from);
 }
 
-bool FILE::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) return false;
+PROTOBUF_NOINLINE bool FILE::IsInitialized() const {
+  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) {
+    return false;
+  }
   return true;
 }
 
-void FILE::InternalSwap(FILE* other) {
+::_pbi::CachedSize* FILE::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void FILE::InternalSwap(FILE* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, lhs_arena,
-                                       &other->_impl_.name_, rhs_arena);
-
-  swap(_impl_.size_, other->_impl_.size_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
+        swap(_impl_.size_, other->_impl_.size_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata FILE::GetMetadata() const {
+::google::protobuf::Metadata FILE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_tftp2_2eproto_getter, &descriptor_table_tftp2_2eproto_once,
       file_level_metadata_tftp2_2eproto[1]);
@@ -786,81 +765,56 @@ class MOVE::_Internal {
   }
 };
 
-MOVE::MOVE(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+MOVE::MOVE(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:tftp2.MOVE)
 }
-MOVE::MOVE(const MOVE& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  MOVE* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.old_name_) {}
+inline PROTOBUF_NDEBUG_INLINE MOVE::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        old_name_(arena, from.old_name_),
+        new_name_(arena, from.new_name_) {}
 
-    , decltype(_impl_.new_name_) {}
-  };
+MOVE::MOVE(
+    ::google::protobuf::Arena* arena,
+    const MOVE& from)
+    : ::google::protobuf::Message(arena) {
+  MOVE* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.old_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.old_name_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.old_name_.Set(from._internal_old_name(), _this->GetArenaForAllocation());
-  }
-  _impl_.new_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.new_name_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    _this->_impl_.new_name_.Set(from._internal_new_name(), _this->GetArenaForAllocation());
-  }
   // @@protoc_insertion_point(copy_constructor:tftp2.MOVE)
 }
+inline PROTOBUF_NDEBUG_INLINE MOVE::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0},
+        old_name_(arena),
+        new_name_(arena) {}
 
 inline void MOVE::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.old_name_) {}
-
-    , decltype(_impl_.new_name_) {}
-
-  };
-  _impl_.old_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.old_name_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.new_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.new_name_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 MOVE::~MOVE() {
   // @@protoc_insertion_point(destructor:tftp2.MOVE)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void MOVE::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.old_name_.Destroy();
   _impl_.new_name_.Destroy();
+  _impl_.~Impl_();
 }
 
-void MOVE::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void MOVE::Clear() {
+PROTOBUF_NOINLINE void MOVE::Clear() {
 // @@protoc_insertion_point(message_clear_start:tftp2.MOVE)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -875,77 +829,68 @@ void MOVE::Clear() {
     }
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* MOVE::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // required string old_name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_old_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "tftp2.MOVE.old_name");
-          #endif  // !NDEBUG
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // required string new_name = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_new_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          #ifndef NDEBUG
-          ::_pbi::VerifyUTF8(str, "tftp2.MOVE.new_name");
-          #endif  // !NDEBUG
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* MOVE::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 35, 2> MOVE::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(MOVE, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_MOVE_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // required string new_name = 2;
+    {::_pbi::TcParser::FastSS1,
+     {18, 1, 0, PROTOBUF_FIELD_OFFSET(MOVE, _impl_.new_name_)}},
+    // required string old_name = 1;
+    {::_pbi::TcParser::FastSS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(MOVE, _impl_.old_name_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // required string old_name = 1;
+    {PROTOBUF_FIELD_OFFSET(MOVE, _impl_.old_name_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kRawString | ::_fl::kRepAString)},
+    // required string new_name = 2;
+    {PROTOBUF_FIELD_OFFSET(MOVE, _impl_.new_name_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kRawString | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\12\10\10\0\0\0\0\0"
+    "tftp2.MOVE"
+    "old_name"
+    "new_name"
+  }},
+};
 
 ::uint8_t* MOVE::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:tftp2.MOVE)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // required string old_name = 1;
   if (cached_has_bits & 0x00000001u) {
     const std::string& _s = this->_internal_old_name();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormat::SERIALIZE,
                                 "tftp2.MOVE.old_name");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
@@ -953,68 +898,55 @@ failure:
   // required string new_name = 2;
   if (cached_has_bits & 0x00000002u) {
     const std::string& _s = this->_internal_new_name();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(_s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormat::SERIALIZE,
                                 "tftp2.MOVE.new_name");
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tftp2.MOVE)
   return target;
 }
 
-::size_t MOVE::RequiredFieldsByteSizeFallback() const {
-// @@protoc_insertion_point(required_fields_byte_size_fallback_start:tftp2.MOVE)
-  ::size_t total_size = 0;
-
-  if ((_impl_._has_bits_[0] & 0x00000001u) != 0) {
-    // required string old_name = 1;
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-                                    this->_internal_old_name());
-  }
-
-  if ((_impl_._has_bits_[0] & 0x00000002u) != 0) {
-    // required string new_name = 2;
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-                                    this->_internal_new_name());
-  }
-
-  return total_size;
-}
 ::size_t MOVE::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:tftp2.MOVE)
   ::size_t total_size = 0;
 
-  if (((_impl_._has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
-    // required string old_name = 1;
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-                                    this->_internal_old_name());
-
-    // required string new_name = 2;
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-                                    this->_internal_new_name());
-
-  } else {
-    total_size += RequiredFieldsByteSizeFallback();
-  }
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    // required string old_name = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this->_internal_old_name());
+    }
+
+    // required string new_name = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                      this->_internal_new_name());
+    }
+
+  }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MOVE::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    MOVE::MergeImpl
+const ::google::protobuf::Message::ClassData MOVE::_class_data_ = {
+    MOVE::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MOVE::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* MOVE::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void MOVE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void MOVE::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<MOVE*>(&to_msg);
   auto& from = static_cast<const MOVE&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:tftp2.MOVE)
@@ -1031,7 +963,7 @@ void MOVE::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_
       _this->_internal_set_new_name(from._internal_new_name());
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MOVE::CopyFrom(const MOVE& from) {
@@ -1041,24 +973,27 @@ void MOVE::CopyFrom(const MOVE& from) {
   MergeFrom(from);
 }
 
-bool MOVE::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) return false;
+PROTOBUF_NOINLINE bool MOVE::IsInitialized() const {
+  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) {
+    return false;
+  }
   return true;
 }
 
-void MOVE::InternalSwap(MOVE* other) {
+::_pbi::CachedSize* MOVE::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void MOVE::InternalSwap(MOVE* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.old_name_, lhs_arena,
-                                       &other->_impl_.old_name_, rhs_arena);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.new_name_, lhs_arena,
-                                       &other->_impl_.new_name_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.old_name_, &other->_impl_.old_name_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.new_name_, &other->_impl_.new_name_, arena);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata MOVE::GetMetadata() const {
+::google::protobuf::Metadata MOVE::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_tftp2_2eproto_getter, &descriptor_table_tftp2_2eproto_once,
       file_level_metadata_tftp2_2eproto[2]);
@@ -1069,118 +1004,115 @@ class ListResponse::_Internal {
  public:
 };
 
-ListResponse::ListResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+ListResponse::ListResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:tftp2.ListResponse)
 }
-ListResponse::ListResponse(const ListResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  ListResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.items_){from._impl_.items_}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE ListResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : items_{visibility, arena, from.items_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+ListResponse::ListResponse(
+    ::google::protobuf::Arena* arena,
+    const ListResponse& from)
+    : ::google::protobuf::Message(arena) {
+  ListResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
   // @@protoc_insertion_point(copy_constructor:tftp2.ListResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE ListResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : items_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void ListResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.items_){arena}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 ListResponse::~ListResponse() {
   // @@protoc_insertion_point(destructor:tftp2.ListResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void ListResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  _internal_mutable_items()->~RepeatedPtrField();
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void ListResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void ListResponse::Clear() {
+PROTOBUF_NOINLINE void ListResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:tftp2.ListResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_mutable_items()->Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _impl_.items_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* ListResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // repeated .tftp2.ListItem items = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_items(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* ListResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ListResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_ListResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated .tftp2.ListItem items = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ListResponse, _impl_.items_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .tftp2.ListItem items = 1;
+    {PROTOBUF_FIELD_OFFSET(ListResponse, _impl_.items_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::tftp2::ListItem>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* ListResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:tftp2.ListResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // repeated .tftp2.ListItem items = 1;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_items_size()); i < n; i++) {
-    const auto& repfield = this->_internal_items(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+    const auto& repfield = this->_internal_items().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
         InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tftp2.ListResponse)
   return target;
@@ -1198,20 +1130,20 @@ failure:
   total_size += 1UL * this->_internal_items_size();
   for (const auto& msg : this->_internal_items()) {
     total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ListResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    ListResponse::MergeImpl
+const ::google::protobuf::Message::ClassData ListResponse::_class_data_ = {
+    ListResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ListResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* ListResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void ListResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void ListResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<ListResponse*>(&to_msg);
   auto& from = static_cast<const ListResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:tftp2.ListResponse)
@@ -1219,8 +1151,9 @@ void ListResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_items()->MergeFrom(from._internal_items());
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_mutable_items()->MergeFrom(
+      from._internal_items());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ListResponse::CopyFrom(const ListResponse& from) {
@@ -1230,19 +1163,22 @@ void ListResponse::CopyFrom(const ListResponse& from) {
   MergeFrom(from);
 }
 
-bool ListResponse::IsInitialized() const {
-  if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(_internal_items()))
+PROTOBUF_NOINLINE bool ListResponse::IsInitialized() const {
+  if (!::google::protobuf::internal::AllAreInitialized(_internal_items()))
     return false;
   return true;
 }
 
-void ListResponse::InternalSwap(ListResponse* other) {
+::_pbi::CachedSize* ListResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ListResponse::InternalSwap(ListResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _internal_mutable_items()->InternalSwap(other->_internal_mutable_items());
+  _impl_.items_.InternalSwap(&other->_impl_.items_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ListResponse::GetMetadata() const {
+::google::protobuf::Metadata ListResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_tftp2_2eproto_getter, &descriptor_table_tftp2_2eproto_once,
       file_level_metadata_tftp2_2eproto[3]);
@@ -1257,23 +1193,19 @@ class ListItem::_Internal {
   static const ::tftp2::PATH& directory(const ListItem* msg);
 };
 
-const ::tftp2::FILE&
-ListItem::_Internal::file(const ListItem* msg) {
+const ::tftp2::FILE& ListItem::_Internal::file(const ListItem* msg) {
   return *msg->_impl_.answer_.file_;
 }
-const ::tftp2::PATH&
-ListItem::_Internal::directory(const ListItem* msg) {
+const ::tftp2::PATH& ListItem::_Internal::directory(const ListItem* msg) {
   return *msg->_impl_.answer_.directory_;
 }
 void ListItem::set_allocated_file(::tftp2::FILE* file) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::google::protobuf::Arena* message_arena = GetArena();
   clear_answer();
   if (file) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(file);
+    ::google::protobuf::Arena* submessage_arena = file->GetArena();
     if (message_arena != submessage_arena) {
-      file = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, file, submessage_arena);
+      file = ::google::protobuf::internal::GetOwnedMessage(message_arena, file, submessage_arena);
     }
     set_has_file();
     _impl_.answer_.file_ = file;
@@ -1281,94 +1213,87 @@ void ListItem::set_allocated_file(::tftp2::FILE* file) {
   // @@protoc_insertion_point(field_set_allocated:tftp2.ListItem.file)
 }
 void ListItem::set_allocated_directory(::tftp2::PATH* directory) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::google::protobuf::Arena* message_arena = GetArena();
   clear_answer();
   if (directory) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(directory);
+    ::google::protobuf::Arena* submessage_arena = directory->GetArena();
     if (message_arena != submessage_arena) {
-      directory = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, directory, submessage_arena);
+      directory = ::google::protobuf::internal::GetOwnedMessage(message_arena, directory, submessage_arena);
     }
     set_has_directory();
     _impl_.answer_.directory_ = directory;
   }
   // @@protoc_insertion_point(field_set_allocated:tftp2.ListItem.directory)
 }
-ListItem::ListItem(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+ListItem::ListItem(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:tftp2.ListItem)
 }
-ListItem::ListItem(const ListItem& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  ListItem* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.answer_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , /*decltype(_impl_._oneof_case_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : answer_{},
+        _cached_size_{0},
+        _oneof_case_{from._oneof_case_[0]} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  clear_has_answer();
-  switch (from.answer_case()) {
-    case kFile: {
-      _this->_internal_mutable_file()->::tftp2::FILE::MergeFrom(
-          from._internal_file());
+ListItem::ListItem(
+    ::google::protobuf::Arena* arena,
+    const ListItem& from)
+    : ::google::protobuf::Message(arena) {
+  ListItem* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  switch (answer_case()) {
+    case ANSWER_NOT_SET:
       break;
-    }
-    case kDirectory: {
-      _this->_internal_mutable_directory()->::tftp2::PATH::MergeFrom(
-          from._internal_directory());
-      break;
-    }
-    case ANSWER_NOT_SET: {
-      break;
-    }
+      case kFile:
+        _impl_.answer_.file_ = CreateMaybeMessage<::tftp2::FILE>(arena, *from._impl_.answer_.file_);
+        break;
+      case kDirectory:
+        _impl_.answer_.directory_ = CreateMaybeMessage<::tftp2::PATH>(arena, *from._impl_.answer_.directory_);
+        break;
   }
+
   // @@protoc_insertion_point(copy_constructor:tftp2.ListItem)
 }
+inline PROTOBUF_NDEBUG_INLINE ListItem::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : answer_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
 
 inline void ListItem::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.answer_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , /*decltype(_impl_._oneof_case_)*/{}
-  };
-  clear_has_answer();
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 ListItem::~ListItem() {
   // @@protoc_insertion_point(destructor:tftp2.ListItem)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void ListItem::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   if (has_answer()) {
     clear_answer();
   }
-}
-
-void ListItem::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
+  _impl_.~Impl_();
 }
 
 void ListItem::clear_answer() {
 // @@protoc_insertion_point(one_of_clear_start:tftp2.ListItem)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   switch (answer_case()) {
     case kFile: {
-      if (GetArenaForAllocation() == nullptr) {
+      if (GetArena() == nullptr) {
         delete _impl_.answer_.file_;
       }
       break;
     }
     case kDirectory: {
-      if (GetArenaForAllocation() == nullptr) {
+      if (GetArena() == nullptr) {
         delete _impl_.answer_.directory_;
       }
       break;
@@ -1381,87 +1306,83 @@ void ListItem::clear_answer() {
 }
 
 
-void ListItem::Clear() {
+PROTOBUF_NOINLINE void ListItem::Clear() {
 // @@protoc_insertion_point(message_clear_start:tftp2.ListItem)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   clear_answer();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* ListItem::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .tftp2.FILE file = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_file(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .tftp2.PATH directory = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_directory(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* ListItem::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 2, 2, 0, 2> ListItem::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_ListItem_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .tftp2.FILE file = 1;
+    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.answer_.file_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .tftp2.PATH directory = 2;
+    {PROTOBUF_FIELD_OFFSET(ListItem, _impl_.answer_.directory_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::tftp2::FILE>()},
+    {::_pbi::TcParser::GetTable<::tftp2::PATH>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* ListItem::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:tftp2.ListItem)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   switch (answer_case()) {
     case kFile: {
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(1, _Internal::file(this),
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          1, _Internal::file(this),
           _Internal::file(this).GetCachedSize(), target, stream);
       break;
     }
     case kDirectory: {
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, _Internal::directory(this),
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, _Internal::directory(this),
           _Internal::directory(this).GetCachedSize(), target, stream);
       break;
     }
-    default: ;
+    default:
+      break;
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tftp2.ListItem)
   return target;
@@ -1478,16 +1399,14 @@ failure:
   switch (answer_case()) {
     // .tftp2.FILE file = 1;
     case kFile: {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.answer_.file_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.answer_.file_);
       break;
     }
     // .tftp2.PATH directory = 2;
     case kDirectory: {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.answer_.directory_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.answer_.directory_);
       break;
     }
     case ANSWER_NOT_SET: {
@@ -1497,14 +1416,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ListItem::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    ListItem::MergeImpl
+const ::google::protobuf::Message::ClassData ListItem::_class_data_ = {
+    ListItem::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ListItem::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* ListItem::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void ListItem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void ListItem::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<ListItem*>(&to_msg);
   auto& from = static_cast<const ListItem&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:tftp2.ListItem)
@@ -1527,7 +1447,7 @@ void ListItem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
       break;
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ListItem::CopyFrom(const ListItem& from) {
@@ -1537,18 +1457,14 @@ void ListItem::CopyFrom(const ListItem& from) {
   MergeFrom(from);
 }
 
-bool ListItem::IsInitialized() const {
+PROTOBUF_NOINLINE bool ListItem::IsInitialized() const {
   switch (answer_case()) {
     case kFile: {
-      if (answer_case() == kFile) {
-        if (!_impl_.answer_.file_->IsInitialized()) return false;
-      }
+      if (answer_case() == kFile && !_impl_.answer_.file_->IsInitialized()) return false;
       break;
     }
     case kDirectory: {
-      if (answer_case() == kDirectory) {
-        if (!_impl_.answer_.directory_->IsInitialized()) return false;
-      }
+      if (answer_case() == kDirectory && !_impl_.answer_.directory_->IsInitialized()) return false;
       break;
     }
     case ANSWER_NOT_SET: {
@@ -1558,14 +1474,17 @@ bool ListItem::IsInitialized() const {
   return true;
 }
 
-void ListItem::InternalSwap(ListItem* other) {
+::_pbi::CachedSize* ListItem::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ListItem::InternalSwap(ListItem* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.answer_, other->_impl_.answer_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ListItem::GetMetadata() const {
+::google::protobuf::Metadata ListItem::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_tftp2_2eproto_getter, &descriptor_table_tftp2_2eproto_once,
       file_level_metadata_tftp2_2eproto[4]);
@@ -1582,31 +1501,25 @@ class Mensagem::_Internal {
   static const ::tftp2::ListResponse& list_response(const Mensagem* msg);
 };
 
-const ::tftp2::PATH&
-Mensagem::_Internal::list(const Mensagem* msg) {
+const ::tftp2::PATH& Mensagem::_Internal::list(const Mensagem* msg) {
   return *msg->_impl_.tipo_.list_;
 }
-const ::tftp2::MOVE&
-Mensagem::_Internal::move(const Mensagem* msg) {
+const ::tftp2::MOVE& Mensagem::_Internal::move(const Mensagem* msg) {
   return *msg->_impl_.tipo_.move_;
 }
-const ::tftp2::PATH&
-Mensagem::_Internal::mkdir(const Mensagem* msg) {
+const ::tftp2::PATH& Mensagem::_Internal::mkdir(const Mensagem* msg) {
   return *msg->_impl_.tipo_.mkdir_;
 }
-const ::tftp2::ListResponse&
-Mensagem::_Internal::list_response(const Mensagem* msg) {
+const ::tftp2::ListResponse& Mensagem::_Internal::list_response(const Mensagem* msg) {
   return *msg->_impl_.tipo_.list_response_;
 }
 void Mensagem::set_allocated_list(::tftp2::PATH* list) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::google::protobuf::Arena* message_arena = GetArena();
   clear_tipo();
   if (list) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(list);
+    ::google::protobuf::Arena* submessage_arena = list->GetArena();
     if (message_arena != submessage_arena) {
-      list = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, list, submessage_arena);
+      list = ::google::protobuf::internal::GetOwnedMessage(message_arena, list, submessage_arena);
     }
     set_has_list();
     _impl_.tipo_.list_ = list;
@@ -1614,14 +1527,12 @@ void Mensagem::set_allocated_list(::tftp2::PATH* list) {
   // @@protoc_insertion_point(field_set_allocated:tftp2.Mensagem.list)
 }
 void Mensagem::set_allocated_move(::tftp2::MOVE* move) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::google::protobuf::Arena* message_arena = GetArena();
   clear_tipo();
   if (move) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(move);
+    ::google::protobuf::Arena* submessage_arena = move->GetArena();
     if (message_arena != submessage_arena) {
-      move = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, move, submessage_arena);
+      move = ::google::protobuf::internal::GetOwnedMessage(message_arena, move, submessage_arena);
     }
     set_has_move();
     _impl_.tipo_.move_ = move;
@@ -1629,14 +1540,12 @@ void Mensagem::set_allocated_move(::tftp2::MOVE* move) {
   // @@protoc_insertion_point(field_set_allocated:tftp2.Mensagem.move)
 }
 void Mensagem::set_allocated_mkdir(::tftp2::PATH* mkdir) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::google::protobuf::Arena* message_arena = GetArena();
   clear_tipo();
   if (mkdir) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(mkdir);
+    ::google::protobuf::Arena* submessage_arena = mkdir->GetArena();
     if (message_arena != submessage_arena) {
-      mkdir = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, mkdir, submessage_arena);
+      mkdir = ::google::protobuf::internal::GetOwnedMessage(message_arena, mkdir, submessage_arena);
     }
     set_has_mkdir();
     _impl_.tipo_.mkdir_ = mkdir;
@@ -1644,116 +1553,105 @@ void Mensagem::set_allocated_mkdir(::tftp2::PATH* mkdir) {
   // @@protoc_insertion_point(field_set_allocated:tftp2.Mensagem.mkdir)
 }
 void Mensagem::set_allocated_list_response(::tftp2::ListResponse* list_response) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  ::google::protobuf::Arena* message_arena = GetArena();
   clear_tipo();
   if (list_response) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(list_response);
+    ::google::protobuf::Arena* submessage_arena = list_response->GetArena();
     if (message_arena != submessage_arena) {
-      list_response = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, list_response, submessage_arena);
+      list_response = ::google::protobuf::internal::GetOwnedMessage(message_arena, list_response, submessage_arena);
     }
     set_has_list_response();
     _impl_.tipo_.list_response_ = list_response;
   }
   // @@protoc_insertion_point(field_set_allocated:tftp2.Mensagem.list_response)
 }
-Mensagem::Mensagem(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Mensagem::Mensagem(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:tftp2.Mensagem)
 }
-Mensagem::Mensagem(const Mensagem& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Mensagem* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.tipo_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , /*decltype(_impl_._oneof_case_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE Mensagem::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : tipo_{},
+        _cached_size_{0},
+        _oneof_case_{from._oneof_case_[0]} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  clear_has_tipo();
-  switch (from.tipo_case()) {
-    case kList: {
-      _this->_internal_mutable_list()->::tftp2::PATH::MergeFrom(
-          from._internal_list());
+Mensagem::Mensagem(
+    ::google::protobuf::Arena* arena,
+    const Mensagem& from)
+    : ::google::protobuf::Message(arena) {
+  Mensagem* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  switch (tipo_case()) {
+    case TIPO_NOT_SET:
       break;
-    }
-    case kMove: {
-      _this->_internal_mutable_move()->::tftp2::MOVE::MergeFrom(
-          from._internal_move());
-      break;
-    }
-    case kMkdir: {
-      _this->_internal_mutable_mkdir()->::tftp2::PATH::MergeFrom(
-          from._internal_mkdir());
-      break;
-    }
-    case kListResponse: {
-      _this->_internal_mutable_list_response()->::tftp2::ListResponse::MergeFrom(
-          from._internal_list_response());
-      break;
-    }
-    case TIPO_NOT_SET: {
-      break;
-    }
+      case kList:
+        _impl_.tipo_.list_ = CreateMaybeMessage<::tftp2::PATH>(arena, *from._impl_.tipo_.list_);
+        break;
+      case kMove:
+        _impl_.tipo_.move_ = CreateMaybeMessage<::tftp2::MOVE>(arena, *from._impl_.tipo_.move_);
+        break;
+      case kMkdir:
+        _impl_.tipo_.mkdir_ = CreateMaybeMessage<::tftp2::PATH>(arena, *from._impl_.tipo_.mkdir_);
+        break;
+      case kListResponse:
+        _impl_.tipo_.list_response_ = CreateMaybeMessage<::tftp2::ListResponse>(arena, *from._impl_.tipo_.list_response_);
+        break;
   }
+
   // @@protoc_insertion_point(copy_constructor:tftp2.Mensagem)
 }
+inline PROTOBUF_NDEBUG_INLINE Mensagem::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : tipo_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
 
 inline void Mensagem::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.tipo_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , /*decltype(_impl_._oneof_case_)*/{}
-  };
-  clear_has_tipo();
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 Mensagem::~Mensagem() {
   // @@protoc_insertion_point(destructor:tftp2.Mensagem)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Mensagem::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   if (has_tipo()) {
     clear_tipo();
   }
-}
-
-void Mensagem::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
+  _impl_.~Impl_();
 }
 
 void Mensagem::clear_tipo() {
 // @@protoc_insertion_point(one_of_clear_start:tftp2.Mensagem)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   switch (tipo_case()) {
     case kList: {
-      if (GetArenaForAllocation() == nullptr) {
+      if (GetArena() == nullptr) {
         delete _impl_.tipo_.list_;
       }
       break;
     }
     case kMove: {
-      if (GetArenaForAllocation() == nullptr) {
+      if (GetArena() == nullptr) {
         delete _impl_.tipo_.move_;
       }
       break;
     }
     case kMkdir: {
-      if (GetArenaForAllocation() == nullptr) {
+      if (GetArena() == nullptr) {
         delete _impl_.tipo_.mkdir_;
       }
       break;
     }
     case kListResponse: {
-      if (GetArenaForAllocation() == nullptr) {
+      if (GetArena() == nullptr) {
         delete _impl_.tipo_.list_response_;
       }
       break;
@@ -1766,117 +1664,103 @@ void Mensagem::clear_tipo() {
 }
 
 
-void Mensagem::Clear() {
+PROTOBUF_NOINLINE void Mensagem::Clear() {
 // @@protoc_insertion_point(message_clear_start:tftp2.Mensagem)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   clear_tipo();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Mensagem::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .tftp2.PATH list = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_list(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .tftp2.MOVE move = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_move(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .tftp2.PATH mkdir = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_mkdir(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .tftp2.ListResponse list_response = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_list_response(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Mensagem::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 4, 4, 0, 2> Mensagem::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    4,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Mensagem_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .tftp2.PATH list = 1;
+    {PROTOBUF_FIELD_OFFSET(Mensagem, _impl_.tipo_.list_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .tftp2.MOVE move = 2;
+    {PROTOBUF_FIELD_OFFSET(Mensagem, _impl_.tipo_.move_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .tftp2.PATH mkdir = 3;
+    {PROTOBUF_FIELD_OFFSET(Mensagem, _impl_.tipo_.mkdir_), _Internal::kOneofCaseOffset + 0, 2,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .tftp2.ListResponse list_response = 4;
+    {PROTOBUF_FIELD_OFFSET(Mensagem, _impl_.tipo_.list_response_), _Internal::kOneofCaseOffset + 0, 3,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::tftp2::PATH>()},
+    {::_pbi::TcParser::GetTable<::tftp2::MOVE>()},
+    {::_pbi::TcParser::GetTable<::tftp2::PATH>()},
+    {::_pbi::TcParser::GetTable<::tftp2::ListResponse>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* Mensagem::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:tftp2.Mensagem)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   switch (tipo_case()) {
     case kList: {
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(1, _Internal::list(this),
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          1, _Internal::list(this),
           _Internal::list(this).GetCachedSize(), target, stream);
       break;
     }
     case kMove: {
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, _Internal::move(this),
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          2, _Internal::move(this),
           _Internal::move(this).GetCachedSize(), target, stream);
       break;
     }
     case kMkdir: {
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(3, _Internal::mkdir(this),
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          3, _Internal::mkdir(this),
           _Internal::mkdir(this).GetCachedSize(), target, stream);
       break;
     }
     case kListResponse: {
-      target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(4, _Internal::list_response(this),
+      target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+          4, _Internal::list_response(this),
           _Internal::list_response(this).GetCachedSize(), target, stream);
       break;
     }
-    default: ;
+    default:
+      break;
   }
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tftp2.Mensagem)
   return target;
@@ -1893,30 +1777,26 @@ failure:
   switch (tipo_case()) {
     // .tftp2.PATH list = 1;
     case kList: {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.tipo_.list_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.tipo_.list_);
       break;
     }
     // .tftp2.MOVE move = 2;
     case kMove: {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.tipo_.move_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.tipo_.move_);
       break;
     }
     // .tftp2.PATH mkdir = 3;
     case kMkdir: {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.tipo_.mkdir_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.tipo_.mkdir_);
       break;
     }
     // .tftp2.ListResponse list_response = 4;
     case kListResponse: {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.tipo_.list_response_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.tipo_.list_response_);
       break;
     }
     case TIPO_NOT_SET: {
@@ -1926,14 +1806,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Mensagem::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Mensagem::MergeImpl
+const ::google::protobuf::Message::ClassData Mensagem::_class_data_ = {
+    Mensagem::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Mensagem::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Mensagem::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Mensagem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Mensagem::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Mensagem*>(&to_msg);
   auto& from = static_cast<const Mensagem&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:tftp2.Mensagem)
@@ -1966,7 +1847,7 @@ void Mensagem::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
       break;
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Mensagem::CopyFrom(const Mensagem& from) {
@@ -1976,30 +1857,22 @@ void Mensagem::CopyFrom(const Mensagem& from) {
   MergeFrom(from);
 }
 
-bool Mensagem::IsInitialized() const {
+PROTOBUF_NOINLINE bool Mensagem::IsInitialized() const {
   switch (tipo_case()) {
     case kList: {
-      if (tipo_case() == kList) {
-        if (!_impl_.tipo_.list_->IsInitialized()) return false;
-      }
+      if (tipo_case() == kList && !_impl_.tipo_.list_->IsInitialized()) return false;
       break;
     }
     case kMove: {
-      if (tipo_case() == kMove) {
-        if (!_impl_.tipo_.move_->IsInitialized()) return false;
-      }
+      if (tipo_case() == kMove && !_impl_.tipo_.move_->IsInitialized()) return false;
       break;
     }
     case kMkdir: {
-      if (tipo_case() == kMkdir) {
-        if (!_impl_.tipo_.mkdir_->IsInitialized()) return false;
-      }
+      if (tipo_case() == kMkdir && !_impl_.tipo_.mkdir_->IsInitialized()) return false;
       break;
     }
     case kListResponse: {
-      if (tipo_case() == kListResponse) {
-        if (!_impl_.tipo_.list_response_->IsInitialized()) return false;
-      }
+      if (tipo_case() == kListResponse && !_impl_.tipo_.list_response_->IsInitialized()) return false;
       break;
     }
     case TIPO_NOT_SET: {
@@ -2009,45 +1882,26 @@ bool Mensagem::IsInitialized() const {
   return true;
 }
 
-void Mensagem::InternalSwap(Mensagem* other) {
+::_pbi::CachedSize* Mensagem::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Mensagem::InternalSwap(Mensagem* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.tipo_, other->_impl_.tipo_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Mensagem::GetMetadata() const {
+::google::protobuf::Metadata Mensagem::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_tftp2_2eproto_getter, &descriptor_table_tftp2_2eproto_once,
       file_level_metadata_tftp2_2eproto[5]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace tftp2
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::tftp2::PATH*
-Arena::CreateMaybeMessage< ::tftp2::PATH >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tftp2::PATH >(arena);
-}
-template<> PROTOBUF_NOINLINE ::tftp2::FILE*
-Arena::CreateMaybeMessage< ::tftp2::FILE >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tftp2::FILE >(arena);
-}
-template<> PROTOBUF_NOINLINE ::tftp2::MOVE*
-Arena::CreateMaybeMessage< ::tftp2::MOVE >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tftp2::MOVE >(arena);
-}
-template<> PROTOBUF_NOINLINE ::tftp2::ListResponse*
-Arena::CreateMaybeMessage< ::tftp2::ListResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tftp2::ListResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::tftp2::ListItem*
-Arena::CreateMaybeMessage< ::tftp2::ListItem >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tftp2::ListItem >(arena);
-}
-template<> PROTOBUF_NOINLINE ::tftp2::Mensagem*
-Arena::CreateMaybeMessage< ::tftp2::Mensagem >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tftp2::Mensagem >(arena);
-}
-PROTOBUF_NAMESPACE_CLOSE
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
 #include "google/protobuf/port_undef.inc"
