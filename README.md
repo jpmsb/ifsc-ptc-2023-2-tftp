@@ -17,6 +17,14 @@ make
 
 Isso produzirá um binário chamado `cliente` que pode ser executado.
 
+Caso ocorra erro relacionado a versão do Protocol Buffers ser mais antiga do que a instalada no sistema, execute o comando abaixo:
+
+```
+protoc -I . --cpp_out=. tftp2.proto
+```
+
+Depois, execute o comando `make` novamente.
+
 ### Uso
 
 O uso dá-se da seguinte forma:
@@ -127,6 +135,14 @@ make
 ```
 
 Isso produzirá um binário chamado `servidor` que pode ser executado.
+
+Caso ocorra erro relacionado a versão do Protocol Buffers ser mais antiga do que a instalada no sistema, execute o comando abaixo:
+
+```
+protoc -I . --cpp_out=. tftp2.proto
+```
+
+Depois, execute o comando `make` novamente.
 
 ### Uso
 
